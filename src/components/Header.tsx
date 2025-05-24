@@ -1,12 +1,16 @@
 import { Link } from '@tanstack/react-router'
+import saccologo from '../assets/saccologo.svg'
 
 export default function Header() {
   return (
-    <header className="p-2 flex gap-2 bg-white text-black justify-between">
-      <nav className="flex flex-row">
-        <div className="px-2 font-bold">
-          <Link to="/">Home</Link>
-        </div>
+    <header className="p-2 flex gap-2 bg-white text-black justify-between items-center">
+      <nav className="flex flex-row space-x-4 px-2 items-center">
+        <Link to="/">
+          <img src={saccologo} alt="Sacco Carpet Logo" className="h-[80px] w-auto" />
+        </Link>
+        <Link to="/shop" className="hover:bg-gray-100">SHOP</Link>
+        <Link to="/installations">INSTALLATIONS</Link>
+        <Link to="/about">ABOUT US</Link>
       </nav>
     </header>
   )
