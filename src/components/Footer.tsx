@@ -1,3 +1,4 @@
+import { Separator } from '@radix-ui/react-separator'
 import { FaFacebookF, FaInstagram, FaPinterestP } from 'react-icons/fa'
 
 export default function Footer() {
@@ -15,6 +16,7 @@ export default function Footer() {
         >
           <FaInstagram className="w-6 h-6" />
         </a>
+
         <a
           href="https://www.facebook.com/people/Sacco-Carpet/100095149239349/"
           target="_blank"
@@ -22,6 +24,7 @@ export default function Footer() {
         >
           <FaFacebookF className="w-6 h-6" />
         </a>
+
         <a
           href="https://www.pinterest.com/saccocarpet/"
           target="_blank"

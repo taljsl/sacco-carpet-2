@@ -12,7 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ShopImport } from './routes/shop'
-import { Route as InstallationsImport } from './routes/installations'
+import { Route as InstallationsResidentialImport } from './routes/installations-residential'
+import { Route as InstallationsHospitalityImport } from './routes/installations-hospitality'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
@@ -24,9 +25,15 @@ const ShopRoute = ShopImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const InstallationsRoute = InstallationsImport.update({
-  id: '/installations',
-  path: '/installations',
+const InstallationsResidentialRoute = InstallationsResidentialImport.update({
+  id: '/installations-residential',
+  path: '/installations-residential',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const InstallationsHospitalityRoute = InstallationsHospitalityImport.update({
+  id: '/installations-hospitality',
+  path: '/installations-hospitality',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,11 +67,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/installations': {
-      id: '/installations'
-      path: '/installations'
-      fullPath: '/installations'
-      preLoaderRoute: typeof InstallationsImport
+    '/installations-hospitality': {
+      id: '/installations-hospitality'
+      path: '/installations-hospitality'
+      fullPath: '/installations-hospitality'
+      preLoaderRoute: typeof InstallationsHospitalityImport
+      parentRoute: typeof rootRoute
+    }
+    '/installations-residential': {
+      id: '/installations-residential'
+      path: '/installations-residential'
+      fullPath: '/installations-residential'
+      preLoaderRoute: typeof InstallationsResidentialImport
       parentRoute: typeof rootRoute
     }
     '/shop': {
@@ -82,14 +96,16 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/installations': typeof InstallationsRoute
+  '/installations-hospitality': typeof InstallationsHospitalityRoute
+  '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/installations': typeof InstallationsRoute
+  '/installations-hospitality': typeof InstallationsHospitalityRoute
+  '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
 }
 
@@ -97,30 +113,49 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/installations': typeof InstallationsRoute
+  '/installations-hospitality': typeof InstallationsHospitalityRoute
+  '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/installations' | '/shop'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/installations-hospitality'
+    | '/installations-residential'
+    | '/shop'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/installations' | '/shop'
-  id: '__root__' | '/' | '/about' | '/installations' | '/shop'
+  to:
+    | '/'
+    | '/about'
+    | '/installations-hospitality'
+    | '/installations-residential'
+    | '/shop'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/installations-hospitality'
+    | '/installations-residential'
+    | '/shop'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  InstallationsRoute: typeof InstallationsRoute
+  InstallationsHospitalityRoute: typeof InstallationsHospitalityRoute
+  InstallationsResidentialRoute: typeof InstallationsResidentialRoute
   ShopRoute: typeof ShopRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  InstallationsRoute: InstallationsRoute,
+  InstallationsHospitalityRoute: InstallationsHospitalityRoute,
+  InstallationsResidentialRoute: InstallationsResidentialRoute,
   ShopRoute: ShopRoute,
 }
 
@@ -136,7 +171,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/installations",
+        "/installations-hospitality",
+        "/installations-residential",
         "/shop"
       ]
     },
@@ -146,8 +182,11 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
-    "/installations": {
-      "filePath": "installations.tsx"
+    "/installations-hospitality": {
+      "filePath": "installations-hospitality.tsx"
+    },
+    "/installations-residential": {
+      "filePath": "installations-residential.tsx"
     },
     "/shop": {
       "filePath": "shop.tsx"
