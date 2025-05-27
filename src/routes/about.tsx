@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import aboutVideo from '../assets/aboutVideo.mp4'
+
 import aboutUsImg1 from '../assets/aboutUsImg1.jpg'
 import aboutUsImg2 from '../assets/aboutUsImg2.jpg'
 import aboutUsLogo from '../assets/aboutUsLogo.svg'
@@ -15,7 +15,7 @@ function RouteComponent() {
         {/* video div */}
         <div className="w-screen h-auto border-[3px] border-blue-500">
           <video
-            src={aboutVideo}
+            src="https://prod-sacco.s3.amazonaws.com/video/about_video.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARBILXDGNIVPQ2CP3%2F20250527%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250527T194010Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=1496afc37163ee002ea47a66c49696618e50815111a7525a451db5f9efb4663a"
             className="w-full h-auto"
             autoPlay
             loop
@@ -60,7 +60,6 @@ function RouteComponent() {
               <div>
                 <img src={aboutUsImg2} alt="" />
               </div>
-              
             </div>
           </div>
         </div>
