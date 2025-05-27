@@ -1,5 +1,11 @@
 import { Separator } from '@radix-ui/react-separator'
 import { FaFacebookF, FaInstagram, FaPinterestP } from 'react-icons/fa'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+
 
 export default function Footer() {
   return (

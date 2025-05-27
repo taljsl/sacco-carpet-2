@@ -2,9 +2,9 @@ import { Link } from '@tanstack/react-router'
 import saccologo from '../assets/saccologo.svg'
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
 export default function Header() {
@@ -41,7 +41,10 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Link to="/about" className="hover:bg-gray-100 border-[1px] border-red-500">
+        <Link
+          to="/about"
+          className="hover:bg-gray-100 border-[1px] border-red-500"
+        >
           ABOUT US
         </Link>
       </nav>
