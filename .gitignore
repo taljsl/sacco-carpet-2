@@ -3,3 +3,6 @@ node_modules
 dist
 dist-ssr
 *.local
+.cursorrules
+.prettierignore
+src/assets/aboutVideo.mp4
