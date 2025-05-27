@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import saccoHomePageVideo from '../assets/saccoHomePageVideo.mp4'
-
+import ResidentialCard from '@/components/ResidentialCard'
+import HospitalityCard from '@/components/HospitalityCard'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -29,13 +30,16 @@ function App() {
         </p>
       </div>
       {/* card div 1 */}
-      <div className='flex '>
-        <div></div>
-        <div></div>
+      <div className="flex flex-row">
+        <div>
+          <ResidentialCard />
+        </div>
+        <div>
+          <HospitalityCard />
+        </div>
       </div>
 
       {/* end card div 1 */}
-      
     </>
   )
 }

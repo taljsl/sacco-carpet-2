@@ -4,13 +4,21 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
-
+} from '@/components/ui/hover-card'
 
 export default function Footer() {
   return (
     <footer className="py-6">
-      <div className="flex justify-center ">
+      <div className="flex justify-center flex-col ">
+        <div className="flex flex-row">
+          {/* change anchor for prod */}
+          <a href="http://localhost:3000/about">About</a>
+          <HoverCard>
+            <HoverCardTrigger>Contact Us</HoverCardTrigger>
+            <HoverCardContent>(212) 226-4344</HoverCardContent>
+          </HoverCard>
+        </div>
+
         <p>© 2025 All Rights reserved</p>
       </div>
       <div className="flex flex-row justify-center gap-4">
