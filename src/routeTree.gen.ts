@@ -16,20 +16,7 @@ import { Route as InstallationsResidentialImport } from './routes/installations-
 import { Route as InstallationsHospitalityImport } from './routes/installations-hospitality'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
-import { Route as ViewInstallation9Import } from './routes/view-installation/9'
-import { Route as ViewInstallation8Import } from './routes/view-installation/8'
-import { Route as ViewInstallation7Import } from './routes/view-installation/7'
-import { Route as ViewInstallation6Import } from './routes/view-installation/6'
-import { Route as ViewInstallation5Import } from './routes/view-installation/5'
-import { Route as ViewInstallation4Import } from './routes/view-installation/4'
-import { Route as ViewInstallation3Import } from './routes/view-installation/3'
-import { Route as ViewInstallation2Import } from './routes/view-installation/2'
-import { Route as ViewInstallation14Import } from './routes/view-installation/14'
-import { Route as ViewInstallation13Import } from './routes/view-installation/13'
-import { Route as ViewInstallation12Import } from './routes/view-installation/12'
-import { Route as ViewInstallation11Import } from './routes/view-installation/11'
-import { Route as ViewInstallation10Import } from './routes/view-installation/10'
-import { Route as ViewInstallation1Import } from './routes/view-installation/1'
+import { Route as ViewInstallationIdImport } from './routes/view-installation/$id'
 
 // Create/Update Routes
 
@@ -63,87 +50,9 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ViewInstallation9Route = ViewInstallation9Import.update({
-  id: '/view-installation/9',
-  path: '/view-installation/9',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation8Route = ViewInstallation8Import.update({
-  id: '/view-installation/8',
-  path: '/view-installation/8',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation7Route = ViewInstallation7Import.update({
-  id: '/view-installation/7',
-  path: '/view-installation/7',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation6Route = ViewInstallation6Import.update({
-  id: '/view-installation/6',
-  path: '/view-installation/6',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation5Route = ViewInstallation5Import.update({
-  id: '/view-installation/5',
-  path: '/view-installation/5',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation4Route = ViewInstallation4Import.update({
-  id: '/view-installation/4',
-  path: '/view-installation/4',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation3Route = ViewInstallation3Import.update({
-  id: '/view-installation/3',
-  path: '/view-installation/3',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation2Route = ViewInstallation2Import.update({
-  id: '/view-installation/2',
-  path: '/view-installation/2',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation14Route = ViewInstallation14Import.update({
-  id: '/view-installation/14',
-  path: '/view-installation/14',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation13Route = ViewInstallation13Import.update({
-  id: '/view-installation/13',
-  path: '/view-installation/13',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation12Route = ViewInstallation12Import.update({
-  id: '/view-installation/12',
-  path: '/view-installation/12',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation11Route = ViewInstallation11Import.update({
-  id: '/view-installation/11',
-  path: '/view-installation/11',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation10Route = ViewInstallation10Import.update({
-  id: '/view-installation/10',
-  path: '/view-installation/10',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ViewInstallation1Route = ViewInstallation1Import.update({
-  id: '/view-installation/1',
-  path: '/view-installation/1',
+const ViewInstallationIdRoute = ViewInstallationIdImport.update({
+  id: '/view-installation/$id',
+  path: '/view-installation/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -186,102 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopImport
       parentRoute: typeof rootRoute
     }
-    '/view-installation/1': {
-      id: '/view-installation/1'
-      path: '/view-installation/1'
-      fullPath: '/view-installation/1'
-      preLoaderRoute: typeof ViewInstallation1Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/10': {
-      id: '/view-installation/10'
-      path: '/view-installation/10'
-      fullPath: '/view-installation/10'
-      preLoaderRoute: typeof ViewInstallation10Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/11': {
-      id: '/view-installation/11'
-      path: '/view-installation/11'
-      fullPath: '/view-installation/11'
-      preLoaderRoute: typeof ViewInstallation11Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/12': {
-      id: '/view-installation/12'
-      path: '/view-installation/12'
-      fullPath: '/view-installation/12'
-      preLoaderRoute: typeof ViewInstallation12Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/13': {
-      id: '/view-installation/13'
-      path: '/view-installation/13'
-      fullPath: '/view-installation/13'
-      preLoaderRoute: typeof ViewInstallation13Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/14': {
-      id: '/view-installation/14'
-      path: '/view-installation/14'
-      fullPath: '/view-installation/14'
-      preLoaderRoute: typeof ViewInstallation14Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/2': {
-      id: '/view-installation/2'
-      path: '/view-installation/2'
-      fullPath: '/view-installation/2'
-      preLoaderRoute: typeof ViewInstallation2Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/3': {
-      id: '/view-installation/3'
-      path: '/view-installation/3'
-      fullPath: '/view-installation/3'
-      preLoaderRoute: typeof ViewInstallation3Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/4': {
-      id: '/view-installation/4'
-      path: '/view-installation/4'
-      fullPath: '/view-installation/4'
-      preLoaderRoute: typeof ViewInstallation4Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/5': {
-      id: '/view-installation/5'
-      path: '/view-installation/5'
-      fullPath: '/view-installation/5'
-      preLoaderRoute: typeof ViewInstallation5Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/6': {
-      id: '/view-installation/6'
-      path: '/view-installation/6'
-      fullPath: '/view-installation/6'
-      preLoaderRoute: typeof ViewInstallation6Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/7': {
-      id: '/view-installation/7'
-      path: '/view-installation/7'
-      fullPath: '/view-installation/7'
-      preLoaderRoute: typeof ViewInstallation7Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/8': {
-      id: '/view-installation/8'
-      path: '/view-installation/8'
-      fullPath: '/view-installation/8'
-      preLoaderRoute: typeof ViewInstallation8Import
-      parentRoute: typeof rootRoute
-    }
-    '/view-installation/9': {
-      id: '/view-installation/9'
-      path: '/view-installation/9'
-      fullPath: '/view-installation/9'
-      preLoaderRoute: typeof ViewInstallation9Import
+    '/view-installation/$id': {
+      id: '/view-installation/$id'
+      path: '/view-installation/$id'
+      fullPath: '/view-installation/$id'
+      preLoaderRoute: typeof ViewInstallationIdImport
       parentRoute: typeof rootRoute
     }
   }
@@ -295,20 +113,7 @@ export interface FileRoutesByFullPath {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
-  '/view-installation/1': typeof ViewInstallation1Route
-  '/view-installation/10': typeof ViewInstallation10Route
-  '/view-installation/11': typeof ViewInstallation11Route
-  '/view-installation/12': typeof ViewInstallation12Route
-  '/view-installation/13': typeof ViewInstallation13Route
-  '/view-installation/14': typeof ViewInstallation14Route
-  '/view-installation/2': typeof ViewInstallation2Route
-  '/view-installation/3': typeof ViewInstallation3Route
-  '/view-installation/4': typeof ViewInstallation4Route
-  '/view-installation/5': typeof ViewInstallation5Route
-  '/view-installation/6': typeof ViewInstallation6Route
-  '/view-installation/7': typeof ViewInstallation7Route
-  '/view-installation/8': typeof ViewInstallation8Route
-  '/view-installation/9': typeof ViewInstallation9Route
+  '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -317,20 +122,7 @@ export interface FileRoutesByTo {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
-  '/view-installation/1': typeof ViewInstallation1Route
-  '/view-installation/10': typeof ViewInstallation10Route
-  '/view-installation/11': typeof ViewInstallation11Route
-  '/view-installation/12': typeof ViewInstallation12Route
-  '/view-installation/13': typeof ViewInstallation13Route
-  '/view-installation/14': typeof ViewInstallation14Route
-  '/view-installation/2': typeof ViewInstallation2Route
-  '/view-installation/3': typeof ViewInstallation3Route
-  '/view-installation/4': typeof ViewInstallation4Route
-  '/view-installation/5': typeof ViewInstallation5Route
-  '/view-installation/6': typeof ViewInstallation6Route
-  '/view-installation/7': typeof ViewInstallation7Route
-  '/view-installation/8': typeof ViewInstallation8Route
-  '/view-installation/9': typeof ViewInstallation9Route
+  '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
 export interface FileRoutesById {
@@ -340,20 +132,7 @@ export interface FileRoutesById {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/shop': typeof ShopRoute
-  '/view-installation/1': typeof ViewInstallation1Route
-  '/view-installation/10': typeof ViewInstallation10Route
-  '/view-installation/11': typeof ViewInstallation11Route
-  '/view-installation/12': typeof ViewInstallation12Route
-  '/view-installation/13': typeof ViewInstallation13Route
-  '/view-installation/14': typeof ViewInstallation14Route
-  '/view-installation/2': typeof ViewInstallation2Route
-  '/view-installation/3': typeof ViewInstallation3Route
-  '/view-installation/4': typeof ViewInstallation4Route
-  '/view-installation/5': typeof ViewInstallation5Route
-  '/view-installation/6': typeof ViewInstallation6Route
-  '/view-installation/7': typeof ViewInstallation7Route
-  '/view-installation/8': typeof ViewInstallation8Route
-  '/view-installation/9': typeof ViewInstallation9Route
+  '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
 export interface FileRouteTypes {
@@ -364,20 +143,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/shop'
-    | '/view-installation/1'
-    | '/view-installation/10'
-    | '/view-installation/11'
-    | '/view-installation/12'
-    | '/view-installation/13'
-    | '/view-installation/14'
-    | '/view-installation/2'
-    | '/view-installation/3'
-    | '/view-installation/4'
-    | '/view-installation/5'
-    | '/view-installation/6'
-    | '/view-installation/7'
-    | '/view-installation/8'
-    | '/view-installation/9'
+    | '/view-installation/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -385,20 +151,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/shop'
-    | '/view-installation/1'
-    | '/view-installation/10'
-    | '/view-installation/11'
-    | '/view-installation/12'
-    | '/view-installation/13'
-    | '/view-installation/14'
-    | '/view-installation/2'
-    | '/view-installation/3'
-    | '/view-installation/4'
-    | '/view-installation/5'
-    | '/view-installation/6'
-    | '/view-installation/7'
-    | '/view-installation/8'
-    | '/view-installation/9'
+    | '/view-installation/$id'
   id:
     | '__root__'
     | '/'
@@ -406,20 +159,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/shop'
-    | '/view-installation/1'
-    | '/view-installation/10'
-    | '/view-installation/11'
-    | '/view-installation/12'
-    | '/view-installation/13'
-    | '/view-installation/14'
-    | '/view-installation/2'
-    | '/view-installation/3'
-    | '/view-installation/4'
-    | '/view-installation/5'
-    | '/view-installation/6'
-    | '/view-installation/7'
-    | '/view-installation/8'
-    | '/view-installation/9'
+    | '/view-installation/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -429,20 +169,7 @@ export interface RootRouteChildren {
   InstallationsHospitalityRoute: typeof InstallationsHospitalityRoute
   InstallationsResidentialRoute: typeof InstallationsResidentialRoute
   ShopRoute: typeof ShopRoute
-  ViewInstallation1Route: typeof ViewInstallation1Route
-  ViewInstallation10Route: typeof ViewInstallation10Route
-  ViewInstallation11Route: typeof ViewInstallation11Route
-  ViewInstallation12Route: typeof ViewInstallation12Route
-  ViewInstallation13Route: typeof ViewInstallation13Route
-  ViewInstallation14Route: typeof ViewInstallation14Route
-  ViewInstallation2Route: typeof ViewInstallation2Route
-  ViewInstallation3Route: typeof ViewInstallation3Route
-  ViewInstallation4Route: typeof ViewInstallation4Route
-  ViewInstallation5Route: typeof ViewInstallation5Route
-  ViewInstallation6Route: typeof ViewInstallation6Route
-  ViewInstallation7Route: typeof ViewInstallation7Route
-  ViewInstallation8Route: typeof ViewInstallation8Route
-  ViewInstallation9Route: typeof ViewInstallation9Route
+  ViewInstallationIdRoute: typeof ViewInstallationIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -451,20 +178,7 @@ const rootRouteChildren: RootRouteChildren = {
   InstallationsHospitalityRoute: InstallationsHospitalityRoute,
   InstallationsResidentialRoute: InstallationsResidentialRoute,
   ShopRoute: ShopRoute,
-  ViewInstallation1Route: ViewInstallation1Route,
-  ViewInstallation10Route: ViewInstallation10Route,
-  ViewInstallation11Route: ViewInstallation11Route,
-  ViewInstallation12Route: ViewInstallation12Route,
-  ViewInstallation13Route: ViewInstallation13Route,
-  ViewInstallation14Route: ViewInstallation14Route,
-  ViewInstallation2Route: ViewInstallation2Route,
-  ViewInstallation3Route: ViewInstallation3Route,
-  ViewInstallation4Route: ViewInstallation4Route,
-  ViewInstallation5Route: ViewInstallation5Route,
-  ViewInstallation6Route: ViewInstallation6Route,
-  ViewInstallation7Route: ViewInstallation7Route,
-  ViewInstallation8Route: ViewInstallation8Route,
-  ViewInstallation9Route: ViewInstallation9Route,
+  ViewInstallationIdRoute: ViewInstallationIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -482,20 +196,7 @@ export const routeTree = rootRoute
         "/installations-hospitality",
         "/installations-residential",
         "/shop",
-        "/view-installation/1",
-        "/view-installation/10",
-        "/view-installation/11",
-        "/view-installation/12",
-        "/view-installation/13",
-        "/view-installation/14",
-        "/view-installation/2",
-        "/view-installation/3",
-        "/view-installation/4",
-        "/view-installation/5",
-        "/view-installation/6",
-        "/view-installation/7",
-        "/view-installation/8",
-        "/view-installation/9"
+        "/view-installation/$id"
       ]
     },
     "/": {
@@ -513,47 +214,8 @@ export const routeTree = rootRoute
     "/shop": {
       "filePath": "shop.tsx"
     },
-    "/view-installation/1": {
-      "filePath": "view-installation/1.tsx"
-    },
-    "/view-installation/10": {
-      "filePath": "view-installation/10.tsx"
-    },
-    "/view-installation/11": {
-      "filePath": "view-installation/11.tsx"
-    },
-    "/view-installation/12": {
-      "filePath": "view-installation/12.tsx"
-    },
-    "/view-installation/13": {
-      "filePath": "view-installation/13.tsx"
-    },
-    "/view-installation/14": {
-      "filePath": "view-installation/14.tsx"
-    },
-    "/view-installation/2": {
-      "filePath": "view-installation/2.tsx"
-    },
-    "/view-installation/3": {
-      "filePath": "view-installation/3.tsx"
-    },
-    "/view-installation/4": {
-      "filePath": "view-installation/4.tsx"
-    },
-    "/view-installation/5": {
-      "filePath": "view-installation/5.tsx"
-    },
-    "/view-installation/6": {
-      "filePath": "view-installation/6.tsx"
-    },
-    "/view-installation/7": {
-      "filePath": "view-installation/7.tsx"
-    },
-    "/view-installation/8": {
-      "filePath": "view-installation/8.tsx"
-    },
-    "/view-installation/9": {
-      "filePath": "view-installation/9.tsx"
+    "/view-installation/$id": {
+      "filePath": "view-installation/$id.tsx"
     }
   }
 }
