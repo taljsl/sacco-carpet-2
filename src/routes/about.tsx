@@ -24,6 +24,20 @@ function RouteComponent() {
           ></video>
         </div>
         {/* end video div */}
+        <div>
+          <h1>About Us</h1>
+          <p>
+            Sacco Carpet was founded in 2001 by Marc and Debra Sacco on the
+            principle of producing the highest quality carpets for the world’s
+            leading interior designers and architects. Sacco’s reputation for
+            excellence and quality grew fiercely when Marc developed Sacco’s
+            Chinese Persian knotted silk collection and South African hand-woven
+            mohair collection, both colored by the famous John Saladino. It was
+            designers like John Saladino, Charlotte Moss and Joe Nahem who
+            caught sight of these collections, earning Sacco a fine reputation
+            for excellent products in high-end residential spaces.
+          </p>
+        </div>
         <div className="container">
           <div className="grid grid-cols-2">
             <div>
