@@ -24,42 +24,42 @@ function RouteComponent() {
     <>
       <div className="container">
         <div className="grid grid-cols-2 grid-rows-4">
-          <Link to="/view-installation/1">
+          <Link to="/view-installation/$id" params={{ id: "1" }}>
             <div>
               <img src={Num1Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/2">
+          <Link to="/view-installation/$id" params={{ id: "2" }}>
             <div>
               <img src={Num2Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/3">
+          <Link to="/view-installation/$id" params={{ id: "3" }}>
             <div>
               <img src={Num3Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/4">
+          <Link to="/view-installation/$id" params={{ id: "4" }}>
             <div>
               <img src={Num4Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/5">
+          <Link to="/view-installation/$id" params={{ id: "5" }}>
             <div>
               <img src={Num5Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/6">
+          <Link to="/view-installation/$id" params={{ id: "6" }}>
             <div>
               <img src={Num6Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/7">
+          <Link to="/view-installation/$id" params={{ id: "7" }}>
             <div>
               <img src={Num7Home} alt="" />
             </div>
           </Link>
-          <Link to="/view-installation/8">
+          <Link to="/view-installation/$id" params={{ id: "8" }}>
             <div>
               <img src={Num8Home} alt="" />
             </div>
