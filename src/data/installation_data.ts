@@ -149,3 +149,10 @@ export const pictures: Array<pictureData> = [
     title: 'GREIG ENTRY RUG LIVING ROOM RUG',
   },
 ]
+
+
+
+export type ImageItem = {
+  src: string
+  id: string
+}
