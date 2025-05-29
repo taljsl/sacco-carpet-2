@@ -10,7 +10,7 @@ export const pictures: Array<pictureData> = [
     id: 1,
     homeImg: '../src/assets/individualpages/Num1Home.jpg',
     images: [
-      { src: '../src/assets/individualpages/Num1Sub1.jpg', picid: 'ID:76620' },
+      { src: '../src/assets/individualpages/Num1Sub1.jpg', picid: 'ID: 76620' },
     ],
     title: 'BREAKERS PALM BEACH',
   },
@@ -18,7 +18,7 @@ export const pictures: Array<pictureData> = [
     id: 2,
     homeImg: '../src/assets/individualpages/Num1Home.jpg',
     images: [
-      { src: '../src/assets/individualpages/Num1Sub1.jpg', picid: 'ID:76620' },
+      { src: '../src/assets/individualpages/Num2Sub1.jpg', picid: 'ID: 92337' },
     ],
     title: 'EDITIONS WEST HOLLYWOOD',
   },
@@ -74,8 +74,14 @@ export const pictures: Array<pictureData> = [
     id: 9,
     homeImg: '../src/assets/individualpages/Num9Home.jpg',
     images: [
-      { src: '../src/assets/individualpages/Num9Sub1.jpg', picid: 'ID: 108272' },
-      { src: '../src/assets/individualpages/Num9Sub2.jpg', picid:'ID: 108267' }
+      {
+        src: '../src/assets/individualpages/Num9Sub1.jpg',
+        picid: 'ID: 108272',
+      },
+      {
+        src: '../src/assets/individualpages/Num9Sub2.jpg',
+        picid: 'ID: 108267',
+      },
     ],
     title: 'BREAKERS PALM BEACH',
   },

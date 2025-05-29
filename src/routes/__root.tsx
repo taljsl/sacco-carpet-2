@@ -4,12 +4,11 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import Header from '../components/Header'
 import Footer from '@/components/Footer'
 
-
 export const Route = createRootRoute({
   component: () => (
     <>
       <Header />
-      <main>
+      <main className="pt-[124px]">
         <Outlet />
       </main>
       <Footer />

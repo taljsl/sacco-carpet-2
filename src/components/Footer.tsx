@@ -1,4 +1,4 @@
-import { Separator } from '@radix-ui/react-separator'
+import { Link } from '@tanstack/react-router'
 import { FaFacebookF, FaInstagram, FaPinterestP } from 'react-icons/fa'
 import {
   HoverCard,
@@ -8,46 +8,95 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="py-6">
-      <div className="flex justify-center flex-col ">
-        <div className="flex flex-row">
-          {/* change anchor for prod */}
-          <a href="http://localhost:3000/about">About</a>
-          <HoverCard>
-            <HoverCardTrigger>Contact Us</HoverCardTrigger>
-            <HoverCardContent>(212) 226-4344</HoverCardContent>
-          </HoverCard>
+    <footer className="flex flex-col py-12">
+      {/* Navigation Links Row */}
+      <div className="row">
+        <div className="flex justify-center flex-col sm:flex-row col">
+          <div className="flex justify-center">
+            <Link
+              to="/about"
+              className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors"
+              style={{ height: '45px' }}
+            >
+              About
+            </Link>
+            <div className="footer-divider mx-4 text-gray-400">&nbsp;|&nbsp;</div>
+          </div>
+          
+          <div className="flex justify-center">
+            <HoverCard>
+              <HoverCardTrigger className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors bg-transparent border-none cursor-pointer" style={{ height: '45px' }}>
+                Contact Us
+              </HoverCardTrigger>
+              <HoverCardContent className="bg-white border shadow-md">
+                (212) 226-4344
+              </HoverCardContent>
+            </HoverCard>
+          </div>
         </div>
-
-        <p>© 2025 All Rights reserved</p>
       </div>
-      <div className="flex flex-row justify-center gap-4">
-        <a
-          href="https://www.instagram.com/saccocarpet/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=""
-        >
-          <FaInstagram className="w-6 h-6" />
-        </a>
 
-        <a
-          href="https://www.facebook.com/people/Sacco-Carpet/100095149239349/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaFacebookF className="w-6 h-6" />
-        </a>
+      {/* Copyright Row */}
+      <div className="row">
+        <div className="flex justify-center py-6 col">
+          <p className="font-medium mb-0 text-gray-700">
+            © 2025 All Rights reserved
+          </p>
+        </div>
+      </div>
 
-        <a
-          href="https://www.pinterest.com/saccocarpet/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaPinterestP className="w-6 h-6" />
-        </a>
+      {/* Social Media Row */}
+      <div className="row">
+        <div className="flex justify-center pb-12 mb-6 md:pb-0 md:mb-0 col">
+          <button
+            type="button"
+            className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Sacco in Instagram"
+            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+          >
+            <a
+              href="https://www.instagram.com/saccocarpet/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-decoration-none"
+            >
+              <FaInstagram className="w-6 h-6 text-gray-700" />
+            </a>
+          </button>
+
+          <button
+            type="button"
+            className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Sacco in Facebook"
+            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+          >
+            <a
+              href="https://www.facebook.com/people/Sacco-Carpet/100095149239349/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-decoration-none"
+            >
+              <FaFacebookF className="w-6 h-6 text-gray-700" />
+            </a>
+          </button>
+
+          <button
+            type="button"
+            className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
+            title="Sacco in Pinterest"
+            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+          >
+            <a
+              href="https://www.pinterest.com/saccocarpet/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-decoration-none"
+            >
+              <FaPinterestP className="w-6 h-6 text-gray-700" />
+            </a>
+          </button>
+        </div>
       </div>
     </footer>
   )
 }
-// "p-2 flex gap-2 bg-white text-black justify-between items-center h-[100px] w-full"

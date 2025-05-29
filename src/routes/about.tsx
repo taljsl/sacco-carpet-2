@@ -15,7 +15,7 @@ function RouteComponent() {
         {/* video div */}
         <div className="w-screen h-auto border-[3px] border-blue-500">
           <video
-            src="https://prod-sacco.s3.amazonaws.com/video/about_video.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARBILXDGNIVPQ2CP3%2F20250527%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250527T194010Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=1496afc37163ee002ea47a66c49696618e50815111a7525a451db5f9efb4663a"
+            src="https://prod-sacco.s3.amazonaws.com/video/about_video.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARBILXDGNIVPQ2CP3%2F20250528%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250528T205937Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=9e36fc80cf0ecd7912a2bf54ca2786ee65add21af4d67b7c43bbba32896c5596"
             className="w-full h-auto"
             autoPlay
             loop

@@ -10,17 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Car } from 'lucide-react'
 
 export const Route = createFileRoute('/view-installation/$id')({
   component: RouteComponent,
 })
-// pictureData = {
-//   id: number
-//   homeImg: string
-//   images: Array<{ src: string; picid: string }>
-//   title: string
-// }
+
 function RouteComponent() {
   const { id }: any = useParams({ strict: false })
   const [currentSelection, setCurrentSelection] = useState<
@@ -47,7 +41,7 @@ function RouteComponent() {
       <div>
         <h3>{currentSelection.title}</h3>
       </div>
-      <div className='flex flex-row flex-wrap '>
+      <div className="flex flex-row flex-wrap ">
         {currentSelection.images.map((img, index) => (
           <Card key={index}>
             <CardContent>
@@ -60,18 +54,3 @@ function RouteComponent() {
     </>
   )
 }
-
-//  <div className="container">
-//       <div>
-//         <img src={Num1Home} alt="" />
-//       </div>
-//       <div>{/* divider goes here */}</div>
-//       <div>
-//         <h3>BREAKERS PALM BEACH</h3>
-//       </div>
-//       <div>
-//         <img src={Num1Sub1} alt="" />
-//         <span>ID:76620</span>
-//       </div>
-//     </div>
-//   )
