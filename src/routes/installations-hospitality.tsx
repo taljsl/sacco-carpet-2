@@ -8,6 +8,7 @@ import Num5Home from '../assets/individualPages/Num5Home.jpg'
 import Num6Home from '../assets/individualPages/Num6Home.jpg'
 import Num7Home from '../assets/individualPages/Num7Home.jpg'
 import Num8Home from '../assets/individualPages/Num8Home.jpg'
+import type { ImageItem } from '@/data/installation_data'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,7 +22,7 @@ export const Route = createFileRoute('/installations-hospitality')({
   component: InstallationsHospitalityPage,
 })
 
-const images = [
+const images:Array<ImageItem> = [
   { src: Num1Home, id: '1' },
   { src: Num2Home, id: '2' },
   { src: Num3Home, id: '3' },
