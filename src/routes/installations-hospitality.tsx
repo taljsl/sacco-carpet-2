@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
+import { Link,createFileRoute } from '@tanstack/react-router'
+
 import Num1Home from '../assets/individualPages/Num1Home.jpg'
 import Num2Home from '../assets/individualPages/Num2Home.jpg'
 import Num3Home from '../assets/individualPages/Num3Home.jpg'

@@ -8,10 +8,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+
+
 export default function Header() {
   return (
-    <header className="fixed top-0 z-50 bg-white w-full h-24 ">
-      <div className="flex justify-between pt-2.5 pr-5 pb-10 pl-[90px]">
+    <header className="fixed top-0 z-50 bg-white w-full h-24 border-b border-gray-300">
+      <div className="flex justify-between pt-2.5 pr-5 pb-2 pl-[90px]">
         {/* Logo */}
         <Link to="/" className="flex">
           <img
@@ -92,7 +94,10 @@ export default function Header() {
             </button>
           </div>
         </div>
+      
       </div>
+{/* <Separator orientation='horizontal' className='my-4 w-auto h-px bg-gray-300'/> */}
     </header>
+    
   )
 }

@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { FaFacebookF, FaInstagram, FaPinterestP } from 'react-icons/fa'
+import { Separator } from '@radix-ui/react-separator'
 import {
   HoverCard,
   HoverCardContent,
@@ -8,7 +9,11 @@ import {
 
 export default function Footer() {
   return (
+    
+    <>
+      <Separator orientation='horizontal' className='mb-4 w-auto h-px bg-gray-300 mt-20'/>
     <footer className="flex flex-col py-12">
+
       {/* Navigation Links Row */}
       <div className="row">
         <div className="flex justify-center flex-col sm:flex-row col">
@@ -20,12 +25,18 @@ export default function Footer() {
             >
               About
             </Link>
-            <div className="footer-divider mx-4 text-gray-400">&nbsp;|&nbsp;</div>
+            <Separator
+              orientation="vertical"
+              className="mx-4 h-auto w-px bg-gray-300"
+            />
           </div>
-          
+
           <div className="flex justify-center">
             <HoverCard>
-              <HoverCardTrigger className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors bg-transparent border-none cursor-pointer" style={{ height: '45px' }}>
+              <HoverCardTrigger
+                className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors bg-transparent border-none cursor-pointer"
+                style={{ height: '45px' }}
+              >
                 Contact Us
               </HoverCardTrigger>
               <HoverCardContent className="bg-white border shadow-md">
@@ -52,7 +63,12 @@ export default function Footer() {
             type="button"
             className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
             title="Sacco in Instagram"
-            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+            style={{
+              minHeight: '36px',
+              minWidth: '36px',
+              maxHeight: '36px',
+              maxWidth: '36px',
+            }}
           >
             <a
               href="https://www.instagram.com/saccocarpet/"
@@ -68,7 +84,12 @@ export default function Footer() {
             type="button"
             className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
             title="Sacco in Facebook"
-            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+            style={{
+              minHeight: '36px',
+              minWidth: '36px',
+              maxHeight: '36px',
+              maxWidth: '36px',
+            }}
           >
             <a
               href="https://www.facebook.com/people/Sacco-Carpet/100095149239349/"
@@ -84,7 +105,12 @@ export default function Footer() {
             type="button"
             className="mx-3 p-2 hover:bg-gray-100 rounded transition-colors"
             title="Sacco in Pinterest"
-            style={{ minHeight: '36px', minWidth: '36px', maxHeight: '36px', maxWidth: '36px' }}
+            style={{
+              minHeight: '36px',
+              minWidth: '36px',
+              maxHeight: '36px',
+              maxWidth: '36px',
+            }}
           >
             <a
               href="https://www.pinterest.com/saccocarpet/"
@@ -98,5 +124,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   )
 }
