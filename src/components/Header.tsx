@@ -1,16 +1,24 @@
+// src/components/Header.tsx
 import { Link } from '@tanstack/react-router'
-import { Search } from 'lucide-react'
+import { LogOut, Search, User, UserCircle } from 'lucide-react'
 import saccologo from '../assets/saccologo.svg'
+import LoginRegisterModal from './LoginRegisterModal'
+import { useAuth } from '@/utils/authContext'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-
-
 export default function Header() {
+  const { isAuthenticated, user, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+  }
+
   return (
     <header className="fixed top-0 z-50 bg-white w-full h-24 border-b border-gray-300">
       <div className="flex justify-between pt-2.5 pr-5 pb-2 pl-[90px]">
@@ -83,21 +91,48 @@ export default function Header() {
             <Search size={24} />
           </button>
 
-          {/* Login Button */}
+          {/* Authentication Section */}
           <div className="flex">
-            <button
-              type="button"
-              className="flex mr-4 px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide"
-              style={{ height: '40px' }}
-            >
-              LOGIN
-            </button>
+            {isAuthenticated && user ? (
+              // Profile Dropdown when authenticated
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  className="flex items-center mr-4 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide bg-transparent border-none outline-none"
+                  style={{ height: '40px' }}
+                >
+                  <UserCircle size={20} className="mr-2" />
+                  <span className="text-uppercase">{user.firstName}</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-white border shadow-md w-48"
+                >
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to="/profile"
+                      className="flex items-center cursor-pointer"
+                    >
+                      <User size={16} className="mr-2" />
+                      <span>View Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="flex items-center cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              // Login Modal when not authenticated
+              <LoginRegisterModal />
+            )}
           </div>
         </div>
-      
       </div>
-{/* <Separator orientation='horizontal' className='my-4 w-auto h-px bg-gray-300'/> */}
     </header>
-    
   )
 }

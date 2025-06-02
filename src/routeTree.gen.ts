@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ShopImport } from './routes/shop'
+import { Route as ProfileImport } from './routes/profile'
 import { Route as InstallationsResidentialImport } from './routes/installations-residential'
 import { Route as InstallationsHospitalityImport } from './routes/installations-hospitality'
 import { Route as AboutImport } from './routes/about'
@@ -23,6 +24,12 @@ import { Route as ViewInstallationIdImport } from './routes/view-installation/$i
 const ShopRoute = ShopImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstallationsResidentialImport
       parentRoute: typeof rootRoute
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -112,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
+  '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -121,6 +136,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
+  '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -131,6 +147,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
+  '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -142,6 +159,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
+    | '/profile'
     | '/shop'
     | '/view-installation/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -150,6 +168,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
+    | '/profile'
     | '/shop'
     | '/view-installation/$id'
   id:
@@ -158,6 +177,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
+    | '/profile'
     | '/shop'
     | '/view-installation/$id'
   fileRoutesById: FileRoutesById
@@ -168,6 +188,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   InstallationsHospitalityRoute: typeof InstallationsHospitalityRoute
   InstallationsResidentialRoute: typeof InstallationsResidentialRoute
+  ProfileRoute: typeof ProfileRoute
   ShopRoute: typeof ShopRoute
   ViewInstallationIdRoute: typeof ViewInstallationIdRoute
 }
@@ -177,6 +198,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   InstallationsHospitalityRoute: InstallationsHospitalityRoute,
   InstallationsResidentialRoute: InstallationsResidentialRoute,
+  ProfileRoute: ProfileRoute,
   ShopRoute: ShopRoute,
   ViewInstallationIdRoute: ViewInstallationIdRoute,
 }
@@ -195,6 +217,7 @@ export const routeTree = rootRoute
         "/about",
         "/installations-hospitality",
         "/installations-residential",
+        "/profile",
         "/shop",
         "/view-installation/$id"
       ]
@@ -210,6 +233,9 @@ export const routeTree = rootRoute
     },
     "/installations-residential": {
       "filePath": "installations-residential.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/shop": {
       "filePath": "shop.tsx"
