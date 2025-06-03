@@ -4,7 +4,6 @@ import { getToken, logout as logoutUtil } from './auth'
 import type { ReactNode } from 'react'
 import api from '@/services/axios'
 
-
 interface User {
   id: string
   firstName: string
@@ -13,7 +12,7 @@ interface User {
   phone: string
   company: string
   timezone: string
-  verificationStatus: 'pending' | 'approved'| 'rejected'
+  verificationStatus: 'pending' | 'approved' | 'rejected'
   isEmailVerified: boolean
   createdAt: string
 }
@@ -33,7 +32,8 @@ interface AuthContextType {
   ) => Promise<void>
   logout: () => void
   loading: boolean
-
+  forgotPassword: (email: string) => Promise<void>
+  resetPassword: (token: string, password: string) => Promise<void>
   updateProfile: (profile: {
     firstName?: string
     lastName?: string
@@ -127,6 +127,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const forgotPassword = async (email: string) => {
+    try {
+      const response = await api.post('/users/forgot-password', { email })
+      return response.data
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        'Failed to send password reset email. Please try again.'
+      throw new Error(message)
+    }
+  }
+
+  const resetPassword = async (token: string, password: string) => {
+    try {
+      const response = await api.post('/users/reset-password', { token, password })
+      return response.data
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        'Failed to reset password. Please try again.'
+      throw new Error(message)
+    }
+  }
+
   const logout = () => {
     logoutUtil()
     setIsAuthenticated(false)
@@ -134,29 +158,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const updateProfile = async (profile: {
-  firstName?: string
-  lastName?: string
-  phone?: string
-  timezone?: string
-}) => {
-  try {
-    const response = await api.put('/users/profile', profile)
-    setUser(response.data.user)
-  } catch (error: any) {
-    const message = error.response?.data?.message || 'Profile update failed.'
-    throw new Error(message)
+    firstName?: string
+    lastName?: string
+    phone?: string
+    timezone?: string
+  }) => {
+    try {
+      const response = await api.put('/users/profile', profile)
+      setUser(response.data.user)
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Profile update failed.'
+      throw new Error(message)
+    }
   }
-}
 
-  const value:AuthContextType = {
+  const value: AuthContextType = {
     isAuthenticated,
     user,
     login,
     register,
     logout,
     loading,
+    forgotPassword,
+    resetPassword,
     updateProfile,
-    
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -1,11 +1,12 @@
 // src/components/LoginRegisterModal.tsx
 import { useEffect, useState } from 'react'
 import saccologo from '../assets/saccologo.svg'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -34,11 +35,13 @@ export default function LoginRegisterModal({
   externalOpen = false,
   onExternalOpenChange,
 }: LoginRegisterModalProps) {
-  const [internalOpen, setInternalOpen] = useState(false)
-  const [isLogin, setIsLogin] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+  const [internalOpen, setInternalOpen] = useState<boolean>(false)
+  const [isLogin, setIsLogin] = useState<boolean>(true)
+  const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
+  const [success, setSuccess] = useState<string>('')
+  const [rememberMe, setRememberMe] = useState<boolean>(false)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -50,7 +53,7 @@ export default function LoginRegisterModal({
     timezone: '',
   })
 
-  const { login, register } = useAuth()
+  const { login, register, forgotPassword } = useAuth()
   const open = externalOpen || internalOpen
   const setOpen = (newOpen: boolean) => {
     if (onExternalOpenChange) {
@@ -60,20 +63,36 @@ export default function LoginRegisterModal({
     }
   }
 
+  // Helper variables for cleaner conditionals
+  const isRegistering = !isLogin && !isForgotPassword
+  const showPasswordField = !isForgotPassword
+  const showRememberMe = isLogin && !isForgotPassword
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail')
+    if (rememberedEmail) {
+      setFormData((prev) => ({ ...prev, email: rememberedEmail }))
+      setRememberMe(true)
+    }
+  }, [])
+
   useEffect(() => {
     if (!open) {
       setIsLogin(true)
+      setIsForgotPassword(false)
       setError('')
       setSuccess('')
+      const rememberedEmail = localStorage.getItem('rememberedEmail')
       setFormData({
         firstName: '',
         lastName: '',
-        email: '',
+        email: rememberedEmail || '',
         password: '',
         phone: '',
         company: '',
         timezone: '',
       })
+      setRememberMe(!!rememberedEmail)
     }
   }, [open])
 
@@ -96,6 +115,13 @@ export default function LoginRegisterModal({
     if (success) setSuccess('')
   }
 
+  const handleRememberMeChange = (checked: boolean) => {
+    setRememberMe(checked)
+    if (!checked) {
+      localStorage.removeItem('rememberedEmail')
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -103,8 +129,24 @@ export default function LoginRegisterModal({
     setSuccess('')
 
     try {
-      if (isLogin) {
+      if (isForgotPassword) {
+        await forgotPassword(formData.email)
+        setSuccess('Password reset link has been sent to your email address.')
+        // Switch back to login after successful forgot password
+        setTimeout(() => {
+          setIsForgotPassword(false)
+          setSuccess('')
+        }, 3000)
+      } else if (isLogin) {
         await login(formData.email, formData.password)
+
+        // Handle remember me
+        if (rememberMe) {
+          localStorage.setItem('rememberedEmail', formData.email)
+        } else {
+          localStorage.removeItem('rememberedEmail')
+        }
+
         setOpen(false) // Close modal on successful login
       } else {
         await register(
@@ -138,18 +180,49 @@ export default function LoginRegisterModal({
   }
 
   const switchMode = () => {
-    setIsLogin(!isLogin)
+    if (isForgotPassword) {
+      setIsForgotPassword(false)
+    } else {
+      setIsLogin(!isLogin)
+    }
     setError('')
     setSuccess('')
+    const rememberedEmail = localStorage.getItem('rememberedEmail')
     setFormData({
       firstName: '',
       lastName: '',
-      email: '',
+      email: rememberedEmail || '',
       password: '',
       phone: '',
       company: '',
       timezone: '',
     })
+  }
+  
+  const showForgotPassword = () => {
+    setIsForgotPassword(true)
+    setIsLogin(true) // Reset to login state
+    setError('')
+    setSuccess('')
+  }
+  
+  const getTitle = () => {
+    if (isForgotPassword) return 'Reset Password'
+    if (isLogin) return 'Welcome Back!'
+    return 'Create Account'
+  }
+
+  const getSubmitButtonText = () => {
+    if (loading) return 'Please wait...'
+    if (isForgotPassword) return 'Send Reset Link'
+    if (isLogin) return 'Login'
+    return 'Register'
+  }
+
+  const getSecondaryButtonText = () => {
+    if (isForgotPassword) return 'Back to Login'
+    if (isLogin) return 'Register'
+    return 'Back to Login'
   }
 
   return (
@@ -179,14 +252,15 @@ export default function LoginRegisterModal({
 
           <div className="flex justify-center text-xl pt-3">
             <h2>
-              <p>{isLogin ? 'Welcome Back!' : 'Create Account'}</p>
+              <p>{getTitle()}</p>
             </h2>
           </div>
 
-          {/* Login/Register form */}
+          {/* Login/Register/Forgot Password form */}
           <CardContent className="bg-white pt-3 space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
+              {/* Registration fields */}
+              {isRegistering && (
                 <>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -196,7 +270,7 @@ export default function LoginRegisterModal({
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        required={!isLogin}
+                        required={isRegistering}
                       />
                     </div>
                     <div className="space-y-2">
@@ -206,7 +280,7 @@ export default function LoginRegisterModal({
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        required={!isLogin}
+                        required={isRegistering}
                       />
                     </div>
                   </div>
@@ -219,7 +293,7 @@ export default function LoginRegisterModal({
                       placeholder="(555) 123-4567"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      required={!isLogin}
+                      required={isRegistering}
                     />
                   </div>
 
@@ -230,7 +304,7 @@ export default function LoginRegisterModal({
                       placeholder="Your company name"
                       value={formData.company}
                       onChange={handleInputChange}
-                      required={!isLogin}
+                      required={isRegistering}
                     />
                   </div>
 
@@ -239,7 +313,7 @@ export default function LoginRegisterModal({
                     <Select
                       value={formData.timezone}
                       onValueChange={handleTimezoneChange}
-                      required={!isLogin}
+                      required={isRegistering}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select your timezone" />
@@ -256,6 +330,7 @@ export default function LoginRegisterModal({
                 </>
               )}
 
+              {/* Email field - always shown */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -268,17 +343,47 @@ export default function LoginRegisterModal({
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
+              {/* Password field - only for login and register */}
+              {showPasswordField && (
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              )}
+
+              {/* Remember me checkbox - only for login */}
+              {showRememberMe && (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="rememberMe"
+                    checked={rememberMe}
+                    onCheckedChange={handleRememberMeChange}
+                  />
+                  <Label htmlFor="rememberMe" className="text-sm">
+                    Remember Me
+                  </Label>
+                </div>
+              )}
+
+              {/* Forgot password link - only for login */}
+              {showRememberMe && (
+                <div className="text-center">
+                  <button
+                    type="button"
+                    className="text-sm text-blue-600 hover:text-blue-800 underline"
+                    onClick={showForgotPassword}
+                  >
+                    Forgot?
+                  </button>
+                </div>
+              )}
 
               {error && (
                 <div className="text-red-600 text-sm text-center p-2 bg-red-50 rounded">
@@ -300,10 +405,10 @@ export default function LoginRegisterModal({
                   onClick={switchMode}
                   disabled={loading}
                 >
-                  {isLogin ? 'Register' : 'Back to Login'}
+                  {getSecondaryButtonText()}
                 </Button>
                 <Button type="submit" className="w-1/2" disabled={loading}>
-                  {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
+                  {getSubmitButtonText()}
                 </Button>
               </div>
             </form>

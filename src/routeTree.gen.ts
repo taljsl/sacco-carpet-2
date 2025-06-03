@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ShopImport } from './routes/shop'
+import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as InstallationsResidentialImport } from './routes/installations-residential'
 import { Route as InstallationsHospitalityImport } from './routes/installations-hospitality'
@@ -25,6 +26,12 @@ import { Route as ViewInstallationIdImport } from './routes/view-installation/$i
 const ShopRoute = ShopImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResetPasswordRoute = ResetPasswordImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -116,6 +123,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordImport
+      parentRoute: typeof rootRoute
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -142,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/profile': typeof ProfileRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -153,6 +168,7 @@ export interface FileRoutesByTo {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/profile': typeof ProfileRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -165,6 +181,7 @@ export interface FileRoutesById {
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
   '/profile': typeof ProfileRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
@@ -178,6 +195,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/profile'
+    | '/reset-password'
     | '/shop'
     | '/view-installation/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -188,6 +206,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/profile'
+    | '/reset-password'
     | '/shop'
     | '/view-installation/$id'
   id:
@@ -198,6 +217,7 @@ export interface FileRouteTypes {
     | '/installations-hospitality'
     | '/installations-residential'
     | '/profile'
+    | '/reset-password'
     | '/shop'
     | '/view-installation/$id'
   fileRoutesById: FileRoutesById
@@ -210,6 +230,7 @@ export interface RootRouteChildren {
   InstallationsHospitalityRoute: typeof InstallationsHospitalityRoute
   InstallationsResidentialRoute: typeof InstallationsResidentialRoute
   ProfileRoute: typeof ProfileRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
   ViewInstallationIdRoute: typeof ViewInstallationIdRoute
 }
@@ -221,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   InstallationsHospitalityRoute: InstallationsHospitalityRoute,
   InstallationsResidentialRoute: InstallationsResidentialRoute,
   ProfileRoute: ProfileRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
   ViewInstallationIdRoute: ViewInstallationIdRoute,
 }
@@ -241,6 +263,7 @@ export const routeTree = rootRoute
         "/installations-hospitality",
         "/installations-residential",
         "/profile",
+        "/reset-password",
         "/shop",
         "/view-installation/$id"
       ]
@@ -262,6 +285,9 @@ export const routeTree = rootRoute
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/reset-password": {
+      "filePath": "reset-password.tsx"
     },
     "/shop": {
       "filePath": "shop.tsx"
