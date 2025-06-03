@@ -3,6 +3,7 @@ export type pictureData = {
   homeImg: string
   images: Array<{ src: string; picid: string }>
   title: string
+  category: 'residential' | 'hospitality' // Added category field
 }
 
 export const pictures: Array<pictureData> = [
@@ -13,6 +14,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num1Sub1.jpg', picid: 'ID: 76620' },
     ],
     title: 'BREAKERS PALM BEACH',
+    category: 'hospitality',
   },
   {
     id: 2,
@@ -21,6 +23,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num2Sub1.jpg', picid: 'ID: 92337' },
     ],
     title: 'EDITIONS WEST HOLLYWOOD',
+    category: 'hospitality',
   },
   {
     id: 3,
@@ -29,8 +32,8 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num3Sub1.jpg', picid: 'ID: 92343' },
     ],
     title: 'EDITIONS WEST HOLYWOOD',
+    category: 'hospitality',
   },
-
   {
     id: 4,
     homeImg: '../src/assets/individualpages/Num4Home.jpg',
@@ -39,6 +42,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num4Sub2.jpg', picid: 'ID: 30249' },
     ],
     title: 'FOUR SEASONS SAN FRANCISCO',
+    category: 'hospitality',
   },
   {
     id: 5,
@@ -47,8 +51,8 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num5Sub1.jpg', picid: 'ID: 96137' },
     ],
     title: 'KABUKI HOTEL',
+    category: 'hospitality',
   },
-
   {
     id: 6,
     homeImg: '../src/assets/individualpages/Num6Home.jpg',
@@ -59,6 +63,7 @@ export const pictures: Array<pictureData> = [
       },
     ],
     title: 'GRAND HYATT NASHVILLE',
+    category: 'hospitality',
   },
   {
     id: 7,
@@ -70,8 +75,8 @@ export const pictures: Array<pictureData> = [
       },
     ],
     title: 'ONE HOTEL TORONTO',
+    category: 'hospitality',
   },
-
   {
     id: 8,
     homeImg: '../src/assets/individualpages/Num8Home.jpg',
@@ -79,6 +84,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num8Sub1.jpg', picid: 'ID: 88669' },
     ],
     title: 'BREAKERS PALM BEACH',
+    category: 'hospitality',
   },
   {
     id: 9,
@@ -99,12 +105,14 @@ export const pictures: Array<pictureData> = [
       {
         src: '../src/assets/individualpages/Num9Sub4.jpg',
         picid: 'ID: 108269',
-      },{
+      },
+      {
         src: '../src/assets/individualpages/Num9Sub5.jpg',
         picid: 'ID: 108270',
       },
     ],
     title: 'ENLIGHTENED TIGER COLLECTION',
+    category: 'residential', // This appears to be an art collection
   },
   {
     id: 10,
@@ -115,6 +123,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num10Sub3.jpg', picid: 'ID: 22603' },
     ],
     title: 'FOX NAHEM DESIGN',
+    category: 'residential',
   },
   {
     id: 11,
@@ -123,6 +132,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num11Sub1.jpg', picid: 'ID: 89722' },
     ],
     title: 'PARIS FORINO YELLOWWOOD',
+    category: 'residential',
   },
   {
     id: 12,
@@ -131,6 +141,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num12Sub1.jpg', picid: 'ID: 108602' },
     ],
     title: 'LANIA LANE MASTER',
+    category: 'residential',
   },
   {
     id: 13,
@@ -139,6 +150,7 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num13Sub1.jpg', picid: 'ID: 21705' },
     ],
     title: 'LANIA LANE LIVING',
+    category: 'residential',
   },
   {
     id: 14,
@@ -147,10 +159,9 @@ export const pictures: Array<pictureData> = [
       { src: '../src/assets/individualpages/Num14Sub1.jpg', picid: 'ID: 196939' },
     ],
     title: 'GREIG ENTRY RUG LIVING ROOM RUG',
+    category: 'residential',
   },
 ]
-
-
 
 export type ImageItem = {
   src: string

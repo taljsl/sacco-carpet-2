@@ -80,6 +80,7 @@ function RouteComponent() {
       'America/Chicago': 'Central Time (CT)',
       'America/Denver': 'Mountain Time (MT)',
       'America/Los_Angeles': 'Pacific Time (PT)',
+      'America/Phoenix': 'Mountain Time - Arizona (MST)',
       'America/Anchorage': 'Alaska Time (AKT)',
       'Pacific/Honolulu': 'Hawaii Time (HT)',
     }
