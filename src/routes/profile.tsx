@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import {
   Building,
@@ -19,8 +19,17 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/utils/authContext'
+import { getToken } from '@/utils/auth'
 
 export const Route = createFileRoute('/profile')({
+  beforeLoad: () => {
+    const token = getToken()
+    if (!token) {
+      throw redirect({
+        to: '/',
+      })
+    }
+  },
   component: RouteComponent,
 })
 
@@ -40,20 +49,25 @@ interface UserProfile {
 }
 
 function RouteComponent() {
-  const { user, updateProfile } = useAuth()
+  const navigate = useNavigate()
+  const { user, updateProfile, isAuthenticated } = useAuth()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-
   const [editData, setEditData] = useState({
     firstName: '',
     lastName: '',
     phone: '',
     timezone: '',
   })
-
+  
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate({ to: '/' })
+    }
+  }, [isAuthenticated, navigate])
   useEffect(() => {
     if (user) {
       setProfile(user)

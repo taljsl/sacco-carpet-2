@@ -1,12 +1,18 @@
 // src/components/LoginRegisterModal.tsx
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import saccologo from '../assets/saccologo.svg'
 import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { useAuth } from '@/utils/authContext'
 
 // Common US timezones - you can expand this list
@@ -19,13 +25,21 @@ const TIMEZONES = [
   { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' },
 ]
 
-export default function LoginRegisterModal() {
-  const [open, setOpen] = useState(false)
+interface LoginRegisterModalProps {
+  externalOpen?: boolean
+  onExternalOpenChange?: (open: boolean) => void
+}
+
+export default function LoginRegisterModal({
+  externalOpen = false,
+  onExternalOpenChange,
+}: LoginRegisterModalProps) {
+  const [internalOpen, setInternalOpen] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -33,15 +47,40 @@ export default function LoginRegisterModal() {
     password: '',
     phone: '',
     company: '',
-    timezone: ''
+    timezone: '',
   })
 
   const { login, register } = useAuth()
+  const open = externalOpen || internalOpen
+  const setOpen = (newOpen: boolean) => {
+    if (onExternalOpenChange) {
+      onExternalOpenChange(newOpen)
+    } else {
+      setInternalOpen(newOpen)
+    }
+  }
+
+  useEffect(() => {
+    if (!open) {
+      setIsLogin(true)
+      setError('')
+      setSuccess('')
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        phone: '',
+        company: '',
+        timezone: '',
+      })
+    }
+  }, [open])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     })
     // Clear errors when user starts typing
     if (error) setError('')
@@ -51,7 +90,7 @@ export default function LoginRegisterModal() {
   const handleTimezoneChange = (value: string) => {
     setFormData({
       ...formData,
-      timezone: value
+      timezone: value,
     })
     if (error) setError('')
     if (success) setSuccess('')
@@ -75,18 +114,20 @@ export default function LoginRegisterModal() {
           formData.password,
           formData.phone,
           formData.company,
-          formData.timezone
+          formData.timezone,
         )
-        setSuccess('Registration successful! Your account is pending approval. You\'ll receive an email once it\'s been reviewed.')
+        setSuccess(
+          "Registration successful! Your account is pending approval. You'll receive an email once it's been reviewed.",
+        )
         // Clear form
-        setFormData({ 
-          firstName: '', 
-          lastName: '', 
-          email: '', 
-          password: '', 
-          phone: '', 
-          company: '', 
-          timezone: '' 
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          phone: '',
+          company: '',
+          timezone: '',
         })
       }
     } catch (err: any) {
@@ -100,14 +141,14 @@ export default function LoginRegisterModal() {
     setIsLogin(!isLogin)
     setError('')
     setSuccess('')
-    setFormData({ 
-      firstName: '', 
-      lastName: '', 
-      email: '', 
-      password: '', 
-      phone: '', 
-      company: '', 
-      timezone: '' 
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      phone: '',
+      company: '',
+      timezone: '',
     })
   }
 
@@ -135,8 +176,8 @@ export default function LoginRegisterModal() {
               Architects and Designers Only
             </h2>
           </div>
-          
-          <div className='flex justify-center text-xl pt-3'>
+
+          <div className="flex justify-center text-xl pt-3">
             <h2>
               <p>{isLogin ? 'Welcome Back!' : 'Create Account'}</p>
             </h2>
@@ -150,8 +191,8 @@ export default function LoginRegisterModal() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input 
-                        id="firstName" 
+                      <Input
+                        id="firstName"
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={handleInputChange}
@@ -160,8 +201,8 @@ export default function LoginRegisterModal() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input 
-                        id="lastName" 
+                      <Input
+                        id="lastName"
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
@@ -172,8 +213,8 @@ export default function LoginRegisterModal() {
 
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input 
-                      id="phone" 
+                    <Input
+                      id="phone"
                       type="tel"
                       placeholder="(555) 123-4567"
                       value={formData.phone}
@@ -184,8 +225,8 @@ export default function LoginRegisterModal() {
 
                   <div className="space-y-2">
                     <Label htmlFor="company">Company</Label>
-                    <Input 
-                      id="company" 
+                    <Input
+                      id="company"
                       placeholder="Your company name"
                       value={formData.company}
                       onChange={handleInputChange}
@@ -195,7 +236,11 @@ export default function LoginRegisterModal() {
 
                   <div className="space-y-2">
                     <Label htmlFor="timezone">Timezone</Label>
-                    <Select value={formData.timezone} onValueChange={handleTimezoneChange} required={!isLogin}>
+                    <Select
+                      value={formData.timezone}
+                      onValueChange={handleTimezoneChange}
+                      required={!isLogin}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select your timezone" />
                       </SelectTrigger>
@@ -210,11 +255,11 @@ export default function LoginRegisterModal() {
                   </div>
                 </>
               )}
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
+                <Input
+                  id="email"
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
@@ -222,7 +267,7 @@ export default function LoginRegisterModal() {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -248,21 +293,17 @@ export default function LoginRegisterModal() {
               )}
 
               <div className="flex justify-between pt-4 space-x-2">
-                <Button 
+                <Button
                   type="button"
-                  variant="outline" 
+                  variant="outline"
                   className="w-1/2"
                   onClick={switchMode}
                   disabled={loading}
                 >
                   {isLogin ? 'Register' : 'Back to Login'}
                 </Button>
-                <Button 
-                  type="submit"
-                  className="w-1/2"
-                  disabled={loading}
-                >
-                  {loading ? 'Please wait...' : (isLogin ? 'Login' : 'Register')}
+                <Button type="submit" className="w-1/2" disabled={loading}>
+                  {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
                 </Button>
               </div>
             </form>

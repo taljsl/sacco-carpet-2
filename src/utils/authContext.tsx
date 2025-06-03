@@ -4,6 +4,7 @@ import { getToken, logout as logoutUtil } from './auth'
 import type { ReactNode } from 'react'
 import api from '@/services/axios'
 
+
 interface User {
   id: string
   firstName: string
@@ -147,7 +148,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 }
 
-  const value = {
+  const value:AuthContextType = {
     isAuthenticated,
     user,
     login,
@@ -155,6 +156,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     logout,
     loading,
     updateProfile,
+    
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

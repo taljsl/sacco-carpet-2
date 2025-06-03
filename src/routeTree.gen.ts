@@ -16,6 +16,7 @@ import { Route as ProfileImport } from './routes/profile'
 import { Route as InstallationsResidentialImport } from './routes/installations-residential'
 import { Route as InstallationsHospitalityImport } from './routes/installations-hospitality'
 import { Route as AboutImport } from './routes/about'
+import { Route as SplatImport } from './routes/$'
 import { Route as IndexImport } from './routes/index'
 import { Route as ViewInstallationIdImport } from './routes/view-installation/$id'
 
@@ -51,6 +52,12 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SplatRoute = SplatImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -72,6 +79,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -123,6 +137,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
@@ -133,6 +148,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
@@ -144,6 +160,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/installations-hospitality': typeof InstallationsHospitalityRoute
   '/installations-residential': typeof InstallationsResidentialRoute
@@ -156,6 +173,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$'
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
@@ -165,6 +183,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
@@ -174,6 +193,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$'
     | '/about'
     | '/installations-hospitality'
     | '/installations-residential'
@@ -185,6 +205,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   InstallationsHospitalityRoute: typeof InstallationsHospitalityRoute
   InstallationsResidentialRoute: typeof InstallationsResidentialRoute
@@ -195,6 +216,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   InstallationsHospitalityRoute: InstallationsHospitalityRoute,
   InstallationsResidentialRoute: InstallationsResidentialRoute,
@@ -214,6 +236,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$",
         "/about",
         "/installations-hospitality",
         "/installations-residential",
@@ -224,6 +247,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/$": {
+      "filePath": "$.tsx"
     },
     "/about": {
       "filePath": "about.tsx"

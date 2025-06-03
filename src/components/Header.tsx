@@ -1,8 +1,10 @@
 // src/components/Header.tsx
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { LogOut, Search, User, UserCircle } from 'lucide-react'
+import { useState } from 'react'
 import saccologo from '../assets/saccologo.svg'
 import LoginRegisterModal from './LoginRegisterModal'
+import { LogoutConfirmation } from './LogoutConfirmation'
 import { useAuth } from '@/utils/authContext'
 import {
   DropdownMenu,
@@ -14,9 +16,24 @@ import {
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth()
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [logoutConfirmationOpen, setLogoutConfirmationOpen] = useState(false)
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     logout()
+    navigate({ to: '/' })
+  }
+
+  const handleLogoutClick = () => {
+    setLogoutConfirmationOpen(true)
+  }
+
+  const handleShopClick = (e: React.MouseEvent) => {
+    if (!isAuthenticated) {
+      e.preventDefault()
+      setLoginModalOpen(true)
+    }
   }
 
   return (
@@ -36,6 +53,7 @@ export default function Header() {
         <div className="flex items-center py-3">
           <Link
             to="/shop"
+            onClick={handleShopClick}
             className="flex items-center justify-center mr-4 px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide cursor-pointer"
             style={{ height: '40px' }}
           >
@@ -118,7 +136,7 @@ export default function Header() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={handleLogout}
+                    onClick={handleLogoutClick}
                     className="flex items-center cursor-pointer text-red-600 focus:text-red-600"
                   >
                     <LogOut size={16} className="mr-2" />
@@ -128,11 +146,19 @@ export default function Header() {
               </DropdownMenu>
             ) : (
               // Login Modal when not authenticated
-              <LoginRegisterModal />
+              <LoginRegisterModal
+                externalOpen={loginModalOpen}
+                onExternalOpenChange={setLoginModalOpen}
+              />
             )}
           </div>
         </div>
       </div>
+      <LogoutConfirmation
+        open={logoutConfirmationOpen}
+        onOpenChange={setLogoutConfirmationOpen}
+        onConfirmLogout={handleLogout}
+      />
     </header>
   )
 }
