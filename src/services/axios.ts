@@ -7,7 +7,7 @@ const api = axios.create({
 // Automatically add token to every request (if available)
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token: string | null = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -17,6 +17,8 @@ api.interceptors.request.use(
 );
 
 export default api;
+
+
 
 
 

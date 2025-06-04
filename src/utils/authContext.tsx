@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.post('/users/login', { email, password })
+      const response = await api.post('/auth/login', { email, password })
       const { token, user: userData } = response.data
 
       localStorage.setItem('token', token)
@@ -108,7 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     timezone: string,
   ) => {
     try {
-      const response = await api.post('/users/register', {
+      const response = await api.post('/auth/register', {
         firstName,
         lastName,
         email,
@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const forgotPassword = async (email: string) => {
     try {
-      const response = await api.post('/users/forgot-password', { email })
+      const response = await api.post('/auth/forgot-password', { email })
       return response.data
     } catch (error: any) {
       const message =
@@ -141,7 +141,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const resetPassword = async (token: string, password: string) => {
     try {
-      const response = await api.post('/users/reset-password', { token, password })
+      const response = await api.post('/auth/reset-password', { token, password })
       return response.data
     } catch (error: any) {
       const message =
@@ -164,7 +164,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     timezone?: string
   }) => {
     try {
-      const response = await api.put('/users/profile', profile)
+      const response = await api.put('/auth/profile', profile)
       setUser(response.data.user)
     } catch (error: any) {
       const message = error.response?.data?.message || 'Profile update failed.'
