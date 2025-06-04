@@ -14,6 +14,32 @@ type ResetPasswordSearch = {
   token?: string
 }
 
+// Password validation function
+const validatePassword = (password: string): { isValid: boolean; errors: Array<string> } => {
+  const errors: Array<string> = []
+  
+  if (password.length < 8) {
+    errors.push('At least 8 characters long')
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    errors.push('At least one uppercase letter')
+  }
+  
+  if (!/[a-z]/.test(password)) {
+    errors.push('At least one lowercase letter')
+  }
+  
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push('At least one special character')
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  }
+}
+
 export const Route = createFileRoute('/reset-password')({
   validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => ({
     token: search.token as string,
@@ -31,9 +57,19 @@ function ResetPassword() {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [success, setSuccess] = useState<string>('')
+  const [passwordValidation, setPasswordValidation] = useState<{ isValid: boolean; errors: Array<string> }>({ isValid: true, errors: [] })
 
   // Check if token is valid (not undefined, null, or empty string)
   const isTokenValid = typeof token === 'string' && token.trim().length > 0
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value
+    setPassword(newPassword)
+    setPasswordValidation(validatePassword(newPassword))
+    
+    // Clear errors when user starts typing
+    if (error) setError('')
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,8 +79,9 @@ function ResetPassword() {
       return
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long.')
+    const validation = validatePassword(password)
+    if (!validation.isValid) {
+      setError(`Password must contain: ${validation.errors.join(', ')}`)
       return
     }
 
@@ -113,13 +150,32 @@ function ResetPassword() {
                 type="password"
                 placeholder="Enter your new password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 required
-                minLength={6}
+                className={password && !passwordValidation.isValid ? 'border-red-500' : ''}
               />
-              <p className="text-sm text-gray-500">
-                Password must be at least 6 characters long.
-              </p>
+              {/* Password requirements */}
+              <div className="text-xs space-y-1">
+                <p className="text-gray-600">Password must contain:</p>
+                <ul className="space-y-1">
+                  <li className={`flex items-center ${password.length >= 8 ? 'text-green-600' : 'text-gray-500'}`}>
+                    <span className="mr-2">{password.length >= 8 ? '✓' : '○'}</span>
+                    At least 8 characters
+                  </li>
+                  <li className={`flex items-center ${/[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                    <span className="mr-2">{/[A-Z]/.test(password) ? '✓' : '○'}</span>
+                    One uppercase letter
+                  </li>
+                  <li className={`flex items-center ${/[a-z]/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                    <span className="mr-2">{/[a-z]/.test(password) ? '✓' : '○'}</span>
+                    One lowercase letter
+                  </li>
+                  <li className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'text-green-600' : 'text-gray-500'}`}>
+                    <span className="mr-2">{/[!@#$%^&*(),.?":{}|<>]/.test(password) ? '✓' : '○'}</span>
+                    One special character
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -129,10 +185,16 @@ function ResetPassword() {
                 type="password"
                 placeholder="Confirm your new password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value)
+                  if (error) setError('')
+                }}
                 required
-                minLength={6}
+                className={confirmPassword && password !== confirmPassword ? 'border-red-500' : ''}
               />
+              {confirmPassword && password !== confirmPassword && (
+                <p className="text-red-500 text-xs">Passwords do not match</p>
+              )}
             </div>
 
             {error && (
@@ -152,7 +214,7 @@ function ResetPassword() {
             <div className="flex flex-col space-y-2">
               <Button
                 type="submit"
-                disabled={loading || !password || !confirmPassword}
+                disabled={loading || !password || !confirmPassword || !passwordValidation.isValid}
                 className="w-full"
               >
                 {loading ? 'Resetting Password...' : 'Reset Password'}

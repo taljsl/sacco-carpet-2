@@ -26,6 +26,32 @@ const TIMEZONES = [
   { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' },
 ]
 
+// Password validation function
+const validatePassword = (password: string): { isValid: boolean; errors: Array<string> } => {
+  const errors: Array<string> = []
+  
+  if (password.length < 8) {
+    errors.push('At least 8 characters long')
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    errors.push('At least one uppercase letter')
+  }
+  
+  if (!/[a-z]/.test(password)) {
+    errors.push('At least one lowercase letter')
+  }
+  
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push('At least one special character')
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  }
+}
+
 interface LoginRegisterModalProps {
   externalOpen?: boolean
   onExternalOpenChange?: (open: boolean) => void
@@ -42,12 +68,14 @@ export default function LoginRegisterModal({
   const [error, setError] = useState<string>('')
   const [success, setSuccess] = useState<string>('')
   const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const [passwordValidation, setPasswordValidation] = useState<{ isValid: boolean; errors: Array<string> }>({ isValid: true, errors: [] })
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
     phone: '',
     company: '',
     timezone: '',
@@ -82,12 +110,14 @@ export default function LoginRegisterModal({
       setIsForgotPassword(false)
       setError('')
       setSuccess('')
+      setPasswordValidation({ isValid: true, errors: [] })
       const rememberedEmail = localStorage.getItem('rememberedEmail')
       setFormData({
         firstName: '',
         lastName: '',
         email: rememberedEmail || '',
         password: '',
+        confirmPassword: '',
         phone: '',
         company: '',
         timezone: '',
@@ -97,10 +127,18 @@ export default function LoginRegisterModal({
   }, [open])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target
+    
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value,
+      [id]: value,
     })
+    
+    // Validate password in real-time for registration
+    if (id === 'password' && isRegistering) {
+      setPasswordValidation(validatePassword(value))
+    }
+    
     // Clear errors when user starts typing
     if (error) setError('')
     if (success) setSuccess('')
@@ -127,6 +165,22 @@ export default function LoginRegisterModal({
     setLoading(true)
     setError('')
     setSuccess('')
+
+    // Validate password for registration
+    if (isRegistering) {
+      const validation = validatePassword(formData.password)
+      if (!validation.isValid) {
+        setError(`Password must contain: ${validation.errors.join(', ')}`)
+        setLoading(false)
+        return
+      }
+      
+      if (formData.password !== formData.confirmPassword) {
+        setError('Passwords do not match.')
+        setLoading(false)
+        return
+      }
+    }
 
     try {
       if (isForgotPassword) {
@@ -167,10 +221,12 @@ export default function LoginRegisterModal({
           lastName: '',
           email: '',
           password: '',
+          confirmPassword: '',
           phone: '',
           company: '',
           timezone: '',
         })
+        setPasswordValidation({ isValid: true, errors: [] })
       }
     } catch (err: any) {
       setError(err.message)
@@ -187,12 +243,14 @@ export default function LoginRegisterModal({
     }
     setError('')
     setSuccess('')
+    setPasswordValidation({ isValid: true, errors: [] })
     const rememberedEmail = localStorage.getItem('rememberedEmail')
     setFormData({
       firstName: '',
       lastName: '',
       email: rememberedEmail || '',
       password: '',
+      confirmPassword: '',
       phone: '',
       company: '',
       timezone: '',
@@ -204,6 +262,7 @@ export default function LoginRegisterModal({
     setIsLogin(true) // Reset to login state
     setError('')
     setSuccess('')
+    setPasswordValidation({ isValid: true, errors: [] })
   }
   
   const getTitle = () => {
@@ -354,7 +413,51 @@ export default function LoginRegisterModal({
                     value={formData.password}
                     onChange={handleInputChange}
                     required
+                    className={isRegistering && formData.password && !passwordValidation.isValid ? 'border-red-500' : ''}
                   />
+                  {/* Password requirements for registration */}
+                  {isRegistering && (
+                    <div className="text-xs space-y-1">
+                      <p className="text-gray-600">Password must contain:</p>
+                      <ul className="space-y-1">
+                        <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-600' : 'text-gray-500'}`}>
+                          <span className="mr-2">{formData.password.length >= 8 ? '✓' : '○'}</span>
+                          At least 8 characters
+                        </li>
+                        <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                          <span className="mr-2">{/[A-Z]/.test(formData.password) ? '✓' : '○'}</span>
+                          One uppercase letter
+                        </li>
+                        <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                          <span className="mr-2">{/[a-z]/.test(formData.password) ? '✓' : '○'}</span>
+                          One lowercase letter
+                        </li>
+                        <li className={`flex items-center ${/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'text-green-600' : 'text-gray-500'}`}>
+                          <span className="mr-2">{/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? '✓' : '○'}</span>
+                          One special character
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Confirm Password field - only for registration */}
+              {isRegistering && (
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required={isRegistering}
+                    className={formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-500' : ''}
+                  />
+                  {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                    <p className="text-red-500 text-xs">Passwords do not match</p>
+                  )}
                 </div>
               )}
 
