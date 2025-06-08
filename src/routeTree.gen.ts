@@ -20,6 +20,7 @@ import { Route as AboutImport } from './routes/about'
 import { Route as SplatImport } from './routes/$'
 import { Route as IndexImport } from './routes/index'
 import { Route as ViewInstallationIdImport } from './routes/view-installation/$id'
+import { Route as AdminDashboardImport } from './routes/admin/dashboard'
 
 // Create/Update Routes
 
@@ -74,6 +75,12 @@ const IndexRoute = IndexImport.update({
 const ViewInstallationIdRoute = ViewInstallationIdImport.update({
   id: '/view-installation/$id',
   path: '/view-installation/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDashboardRoute = AdminDashboardImport.update({
+  id: '/admin/dashboard',
+  path: '/admin/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -137,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShopImport
       parentRoute: typeof rootRoute
     }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardImport
+      parentRoute: typeof rootRoute
+    }
     '/view-installation/$id': {
       id: '/view-installation/$id'
       path: '/view-installation/$id'
@@ -158,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
@@ -170,6 +185,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
@@ -183,6 +199,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/view-installation/$id': typeof ViewInstallationIdRoute
 }
 
@@ -197,6 +214,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reset-password'
     | '/shop'
+    | '/admin/dashboard'
     | '/view-installation/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -208,6 +226,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reset-password'
     | '/shop'
+    | '/admin/dashboard'
     | '/view-installation/$id'
   id:
     | '__root__'
@@ -219,6 +238,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reset-password'
     | '/shop'
+    | '/admin/dashboard'
     | '/view-installation/$id'
   fileRoutesById: FileRoutesById
 }
@@ -232,6 +252,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
   ViewInstallationIdRoute: typeof ViewInstallationIdRoute
 }
 
@@ -244,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
   ViewInstallationIdRoute: ViewInstallationIdRoute,
 }
 
@@ -265,6 +287,7 @@ export const routeTree = rootRoute
         "/profile",
         "/reset-password",
         "/shop",
+        "/admin/dashboard",
         "/view-installation/$id"
       ]
     },
@@ -291,6 +314,9 @@ export const routeTree = rootRoute
     },
     "/shop": {
       "filePath": "shop.tsx"
+    },
+    "/admin/dashboard": {
+      "filePath": "admin/dashboard.tsx"
     },
     "/view-installation/$id": {
       "filePath": "view-installation/$id.tsx"

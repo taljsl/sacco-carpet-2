@@ -14,7 +14,14 @@ interface User {
   timezone: string
   verificationStatus: 'pending' | 'approved' | 'rejected'
   isEmailVerified: boolean
+  isAdmin: boolean
   createdAt: string
+  assignedRepresentative? : {
+    _id: string
+    name: string
+    phone: string
+    email: string
+  }
 }
 
 interface AuthContextType {
@@ -182,6 +189,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     forgotPassword,
     resetPassword,
     updateProfile,
+    
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

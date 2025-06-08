@@ -1,469 +1,443 @@
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+// src/routes/profile.tsx
 import { useEffect, useState } from 'react'
+import { Navigate, createFileRoute } from '@tanstack/react-router'
 import {
-  Building,
-  Calendar,
+  Building2,
+  CheckCircle,
   Clock,
   Edit,
   Mail,
   Phone,
   Save,
   User,
+  UserCheck,
   X,
+  XCircle,
 } from 'lucide-react'
-
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { useAuth } from '@/utils/authContext'
-import { getToken } from '@/utils/auth'
 
 export const Route = createFileRoute('/profile')({
-  beforeLoad: () => {
-    const token = getToken()
-    if (!token) {
-      throw redirect({
-        to: '/',
-      })
-    }
-  },
-  component: RouteComponent,
+  component: Profile,
 })
 
-interface UserProfile {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  company: string
-  timezone: string
-  verificationStatus: 'pending' | 'approved' | 'rejected'
-  isEmailVerified: boolean
-  createdAt: string
-  verifiedAt?: string
-  verifiedBy?: string
-}
+const TIMEZONES = [
+  { value: 'America/New_York', label: 'Eastern Time (ET)' },
+  { value: 'America/Chicago', label: 'Central Time (CT)' },
+  { value: 'America/Denver', label: 'Mountain Time (MT)' },
+  { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
+  { value: 'America/Anchorage', label: 'Alaska Time (AKT)' },
+  { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' },
+]
 
-function RouteComponent() {
-  const navigate = useNavigate()
-  const { user, updateProfile, isAuthenticated } = useAuth()
-  const [profile, setProfile] = useState<UserProfile | null>(null)
+function Profile() {
+  const { isAuthenticated, user, updateProfile, loading } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [updateLoading, setUpdateLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [editData, setEditData] = useState({
+
+  const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     phone: '',
     timezone: '',
   })
-  
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate({ to: '/' })
-    }
-  }, [isAuthenticated, navigate])
+
+  // Update form data when user data becomes available
   useEffect(() => {
     if (user) {
-      setProfile(user)
-      setEditData({
+      setFormData({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         phone: user.phone || '',
-        timezone: user.timezone || '', // Add this
+        timezone: user.timezone || '',
       })
     }
   }, [user])
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
-
-  const formatTimezone = (timezone: string) => {
-    const timezoneMap: { [key: string]: string } = {
-      'America/New_York': 'Eastern Time (ET)',
-      'America/Chicago': 'Central Time (CT)',
-      'America/Denver': 'Mountain Time (MT)',
-      'America/Los_Angeles': 'Pacific Time (PT)',
-      'America/Phoenix': 'Mountain Time - Arizona (MST)',
-      'America/Anchorage': 'Alaska Time (AKT)',
-      'Pacific/Honolulu': 'Hawaii Time (HT)',
-    }
-    return timezoneMap[timezone] || timezone
-  }
-
-  const getStatusBadge = (status: string) => {
-    const badgeProps = {
-      pending: {
-        variant: 'secondary' as const,
-        color: 'bg-yellow-100 text-yellow-800',
-      },
-      approved: {
-        variant: 'default' as const,
-        color: 'bg-green-100 text-green-800',
-      },
-      rejected: {
-        variant: 'destructive' as const,
-        color: 'bg-red-100 text-red-800',
-      },
-    }
-
-    const props = badgeProps[status as keyof typeof badgeProps]
-
+  if (loading) {
     return (
-      <Badge variant={props.variant} className={props.color}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
-    )
-  }
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    setEditData({
-      ...editData,
-      [e.target.id]: e.target.value,
-    })
-    if (error) setError('')
-    if (success) setSuccess('')
-  }
-
-  const handleEdit = () => {
-    setIsEditing(true)
-    setError('')
-    setSuccess('')
-  }
-
-  const handleCancel = () => {
-    setIsEditing(false)
-    setError('')
-    setSuccess('')
-    // Reset to original values
-    if (profile) {
-      setEditData({
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        phone: profile.phone,
-        timezone: profile.timezone, // Add this
-      })
-    }
-  }
-
-  const handleSave = async () => {
-    if (
-      !editData.firstName ||
-      !editData.lastName ||
-      !editData.phone ||
-      !editData.timezone
-    ) {
-      setError('Please fill in all fields')
-      return
-    }
-
-    setLoading(true)
-    setError('')
-    setSuccess('')
-
-    try {
-      await updateProfile({
-        firstName: editData.firstName,
-        lastName: editData.lastName,
-        phone: editData.phone,
-        timezone: editData.timezone,
-      })
-      setSuccess('Profile updated successfully!')
-      setIsEditing(false)
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  if (!profile) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <User className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Loading Profile
-            </h3>
-            <p className="text-gray-500">
-              Please wait while we load your profile information...
-            </p>
-          </div>
-        </div>
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
       </div>
     )
   }
 
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/" />
+  }
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return (
+          <Badge
+            variant="outline"
+            className="bg-yellow-50 text-yellow-700 border-yellow-200"
+          >
+            <Clock className="w-3 h-3 mr-1" />
+            Pending Approval
+          </Badge>
+        )
+      case 'approved':
+        return (
+          <Badge
+            variant="outline"
+            className="bg-green-50 text-green-700 border-green-200"
+          >
+            <CheckCircle className="w-3 h-3 mr-1" />
+            Approved
+          </Badge>
+        )
+      case 'rejected':
+        return (
+          <Badge
+            variant="outline"
+            className="bg-red-50 text-red-700 border-red-200"
+          >
+            <XCircle className="w-3 h-3 mr-1" />
+            Rejected
+          </Badge>
+        )
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+    if (error) setError('')
+    if (success) setSuccess('')
+  }
+
+  const handleTimezoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      timezone: value,
+    }))
+    if (error) setError('')
+    if (success) setSuccess('')
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setUpdateLoading(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      await updateProfile(formData)
+      setSuccess('Profile updated successfully!')
+      setIsEditing(false)
+    } catch (err: any) {
+      setError(err.message || 'Failed to update profile')
+    } finally {
+      setUpdateLoading(false)
+    }
+  }
+
+  const handleCancel = () => {
+    // Reset to current user data
+    setFormData({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      phone: user.phone || '',
+      timezone: user.timezone || '',
+    })
+    setIsEditing(false)
+    setError('')
+    setSuccess('')
+  }
+
+  const handleEdit = () => {
+    // Ensure we have the latest user data when starting to edit
+    setFormData({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      phone: user.phone || '',
+      timezone: user.timezone || '',
+    })
+    setIsEditing(true)
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Profile</h1>
-          <p className="text-gray-600">
-            Manage your account information and settings
-          </p>
-        </div>
+    <div className="container mx-auto px-4 py-8 mt-24 max-w-4xl">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
+        <p className="text-gray-600">
+          Manage your account information and view your representative details
+        </p>
+      </div>
 
-        {/* Status Messages */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        )}
-
-        {success && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-green-600 text-sm">{success}</p>
-          </div>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Personal Information Card */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xl font-semibold">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Personal Information Card */}
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-center">
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
                 Personal Information
               </CardTitle>
-              {!isEditing ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleEdit}
-                  className="flex items-center gap-2"
-                >
-                  <Edit className="h-4 w-4" />
+              {!isEditing && (
+                <Button onClick={handleEdit} variant="outline" size="sm">
+                  <Edit className="h-4 w-4 mr-1" />
                   Edit
                 </Button>
-              ) : (
-                <div className="flex gap-2">
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {error && (
+              <div className="text-red-600 text-sm mb-4 p-2 bg-red-50 rounded">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="text-green-600 text-sm mb-4 p-2 bg-green-50 rounded">
+                {success}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={!isEditing ? 'bg-gray-50' : ''}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={!isEditing ? 'bg-gray-50' : ''}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label>Email</Label>
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-gray-400" />
+                  <Input
+                    value={user.email || ''}
+                    disabled
+                    className="bg-gray-50"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Email cannot be changed
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="phone">Phone Number</Label>
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-gray-400" />
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className={!isEditing ? 'bg-gray-50' : ''}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label>Company</Label>
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4 text-gray-400" />
+                  <Input
+                    value={user.company || ''}
+                    disabled
+                    className="bg-gray-50"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Company cannot be changed
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="timezone">Timezone</Label>
+                <Select
+                  value={formData.timezone}
+                  onValueChange={handleTimezoneChange}
+                  disabled={!isEditing}
+                >
+                  <SelectTrigger className={!isEditing ? 'bg-gray-50' : ''}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIMEZONES.map((tz) => (
+                      <SelectItem key={tz.value} value={tz.value}>
+                        {tz.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {isEditing && (
+                <div className="flex gap-2 pt-4">
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCancel}
-                    className="flex items-center gap-2"
+                    type="submit"
+                    disabled={updateLoading}
+                    className="flex-1"
                   >
-                    <X className="h-4 w-4" />
+                    <Save className="h-4 w-4 mr-1" />
+                    {updateLoading ? 'Saving...' : 'Save Changes'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancel}
+                    disabled={updateLoading}
+                    className="flex-1"
+                  >
+                    <X className="h-4 w-4 mr-1" />
                     Cancel
                   </Button>
-                  <Button
-                    size="sm"
-                    onClick={handleSave}
-                    disabled={loading}
-                    className="flex items-center gap-2"
-                  >
-                    <Save className="h-4 w-4" />
-                    {loading ? 'Saving...' : 'Save'}
-                  </Button>
                 </div>
               )}
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {isEditing ? (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        value={editData.firstName}
-                        onChange={handleInputChange}
-                        placeholder="First name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        value={editData.lastName}
-                        onChange={handleInputChange}
-                        placeholder="Last name"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      value={editData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Phone number"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="timezone">Timezone</Label>
-                    <select
-                      id="timezone"
-                      value={editData.timezone}
-                      onChange={handleInputChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <option value="">Select Timezone</option>
-                      <option value="America/New_York">
-                        Eastern Time (ET)
-                      </option>
-                      <option value="America/Chicago">Central Time (CT)</option>
-                      <option value="America/Denver">Mountain Time (MT)</option>
-                      <option value="America/Los_Angeles">
-                        Pacific Time (PT)
-                      </option>
-                      <option value="America/Phoenix">
-                        Mountain Time - Arizona (MST)
-                      </option>
-                      <option value="America/Anchorage">
-                        Alaska Time (AKT)
-                      </option>
-                      <option value="Pacific/Honolulu">Hawaii Time (HT)</option>
-                      <option value="UTC">UTC</option>
-                    </select>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <User className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">
-                        {profile.firstName} {profile.lastName}
-                      </p>
-                      <p className="text-sm text-gray-500">Full Name</p>
-                    </div>
-                  </div>
+            </form>
+          </CardContent>
+        </Card>
 
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">{profile.phone}</p>
-                      <p className="text-sm text-gray-500">Phone Number</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Account Information Card */}
+        {/* Account Status & Representative Card */}
+        <div className="space-y-6">
+          {/* Account Status */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl font-semibold">
-                Account Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-gray-400" />
-                <div>
-                  <p className="font-medium">{profile.email}</p>
-                  <p className="text-sm text-gray-500">Email Address</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Building className="h-5 w-5 text-gray-400" />
-                <div>
-                  <p className="font-medium">{profile.company}</p>
-                  <p className="text-sm text-gray-500">Company</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-gray-400" />
-                <div>
-                  <p className="font-medium">
-                    {formatTimezone(profile.timezone)}
-                  </p>
-                  <p className="text-sm text-gray-500">Timezone</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Calendar className="h-5 w-5 text-gray-400" />
-                <div>
-                  <p className="font-medium">{formatDate(profile.createdAt)}</p>
-                  <p className="text-sm text-gray-500">Member Since</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Account Status Card */}
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
                 Account Status
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Verification Status</span>
-                  {getStatusBadge(profile.verificationStatus)}
-                </div>
+            <CardContent className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">
+                  Verification Status:
+                </span>
+                {getStatusBadge(user.verificationStatus)}
+              </div>
 
-                <Separator />
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Email Verified:</span>
+                <Badge variant={user.isEmailVerified ? 'default' : 'secondary'}>
+                  {user.isEmailVerified ? 'Yes' : 'No'}
+                </Badge>
+              </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Email Verified</span>
+              {user.isAdmin && (
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Account Type:</span>
                   <Badge
-                    variant={profile.isEmailVerified ? 'default' : 'secondary'}
+                    variant="outline"
+                    className="bg-red-50 text-red-700 border-red-200"
                   >
-                    {profile.isEmailVerified ? 'Verified' : 'Not Verified'}
+                    Administrator
                   </Badge>
                 </div>
+              )}
 
-                {profile.verifiedAt && profile.verifiedBy && (
-                  <>
-                    <Separator />
-                    <div className="text-sm text-gray-600">
-                      <p>
-                        Verified on {formatDate(profile.verifiedAt)} by{' '}
-                        {profile.verifiedBy}
-                      </p>
-                    </div>
-                  </>
-                )}
-
-                {profile.verificationStatus === 'pending' && (
-                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-yellow-800 text-sm">
-                      Your account is pending approval. You'll receive an email
-                      notification once an administrator has reviewed your
-                      registration.
-                    </p>
-                  </div>
-                )}
-
-                {profile.verificationStatus === 'rejected' && (
-                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-800 text-sm">
-                      Your account registration has been rejected. Please
-                      contact support for more information.
-                    </p>
-                  </div>
-                )}
-
-                {profile.verificationStatus === 'approved' && (
-                  <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <p className="text-green-800 text-sm">
-                      Your account has been approved and is fully active.
-                      Welcome!
-                    </p>
-                  </div>
-                )}
+              <div className="pt-2 border-t">
+                <span className="text-xs text-gray-500">
+                  Member since: {new Date(user.createdAt).toLocaleDateString()}
+                </span>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Representative Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <UserCheck className="h-5 w-5" />
+                Your Representative
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {user.assignedRepresentative ? (
+                <div className="space-y-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="font-semibold text-lg text-blue-900 mb-2">
+                      {user.assignedRepresentative.name}
+                    </h3>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-blue-700">
+                        <Mail className="h-4 w-4" />
+                        <a
+                          href={`mailto:${user.assignedRepresentative.email}`}
+                          className="hover:underline"
+                        >
+                          {user.assignedRepresentative.email}
+                        </a>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-blue-700">
+                        <Phone className="h-4 w-4" />
+                        <a
+                          href={`tel:${user.assignedRepresentative.phone}`}
+                          className="hover:underline"
+                        >
+                          {user.assignedRepresentative.phone}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
+                    <p className="font-medium mb-1">💡 Your Personal Contact</p>
+                    <p>
+                      {user.assignedRepresentative.name} is your dedicated
+                      representative. When you use the "Talk to Us" feature on
+                      our website, your messages will be sent directly to them
+                      for personalized assistance.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <UserCheck className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500 mb-2">
+                    No representative assigned yet
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    {user.verificationStatus === 'pending'
+                      ? 'A representative will be assigned once your account is approved.'
+                      : 'Please contact our admin team to have a representative assigned to your account.'}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

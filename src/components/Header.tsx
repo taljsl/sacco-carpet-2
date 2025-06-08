@@ -94,11 +94,22 @@ export default function Header() {
 
           <Link
             to="/about"
-            className="flex mr-16 px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide"
+            className="flex mr-4 px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide"
             style={{ height: '40px' }}
           >
             ABOUT US
           </Link>
+
+          {/* Admin Link - only show for admin users */}
+          {isAuthenticated && user?.isAdmin && (
+            <Link
+              to="/admin/dashboard"
+              className="flex mr-4 px-4 py-2 text-uppercase text-red-600 hover:text-red-800 transition-colors font-medium tracking-wide"
+              style={{ height: '40px' }}
+            >
+              ADMIN
+            </Link>
+          )}
 
           {/* Search Button */}
           <button
@@ -120,6 +131,11 @@ export default function Header() {
                 >
                   <UserCircle size={20} className="mr-2" />
                   <span className="text-uppercase">{user.firstName}</span>
+                  {user.isAdmin && (
+                    <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                      ADMIN
+                    </span>
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
@@ -134,6 +150,20 @@ export default function Header() {
                       <span>View Profile</span>
                     </Link>
                   </DropdownMenuItem>
+                  {user.isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link
+                          to="/admin/dashboard"
+                          className="flex items-center cursor-pointer text-red-600 focus:text-red-600"
+                        >
+                          <UserCircle size={16} className="mr-2" />
+                          <span>Admin Dashboard</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleLogoutClick}
