@@ -1,13 +1,5 @@
+// src/routes/installations-hospitality.tsx
 import { Link, createFileRoute } from '@tanstack/react-router'
-
-import Num1Home from '../assets/individualPages/Num1Home.jpg'
-import Num2Home from '../assets/individualPages/Num2Home.jpg'
-import Num3Home from '../assets/individualPages/Num3Home.jpg'
-import Num4Home from '../assets/individualPages/Num4Home.jpg'
-import Num5Home from '../assets/individualPages/Num5Home.jpg'
-import Num6Home from '../assets/individualPages/Num6Home.jpg'
-import Num7Home from '../assets/individualPages/Num7Home.jpg'
-import Num8Home from '../assets/individualPages/Num8Home.jpg'
 import type { ImageItem } from '@/data/installation_data'
 import {
   Breadcrumb,
@@ -22,15 +14,15 @@ export const Route = createFileRoute('/installations-hospitality')({
   component: InstallationsHospitalityPage,
 })
 
-const images:Array<ImageItem> = [
-  { src: Num1Home, id: '1' },
-  { src: Num2Home, id: '2' },
-  { src: Num3Home, id: '3' },
-  { src: Num4Home, id: '4' },
-  { src: Num5Home, id: '5' },
-  { src: Num6Home, id: '6' },
-  { src: Num7Home, id: '7' },
-  { src: Num8Home, id: '8' },
+const images: Array<ImageItem> = [
+  { src: '/images/individualpages/Num1Home.jpg', id: '1' },
+  { src: '/images/individualpages/Num2Home.jpg', id: '2' },
+  { src: '/images/individualpages/Num3Home.jpg', id: '3' },
+  { src: '/images/individualpages/Num4Home.jpg', id: '4' },
+  { src: '/images/individualpages/Num5Home.jpg', id: '5' },
+  { src: '/images/individualpages/Num6Home.jpg', id: '6' },
+  { src: '/images/individualpages/Num7Home.jpg', id: '7' },
+  { src: '/images/individualpages/Num8Home.jpg', id: '8' },
 ]
 
 function InstallationsHospitalityPage() {
