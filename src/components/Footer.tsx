@@ -14,14 +14,14 @@ export default function Footer() {
         orientation="horizontal"
         className="mb-4 w-auto h-px bg-gray-300 mt-20"
       />
-      <footer className="flex flex-col py-12">
+      <footer className="flex flex-col py-12 ">
         {/* Navigation Links Row */}
-        <div className="row">
+        <div className="row ">
           <div className="flex justify-center flex-col sm:flex-row col">
-            <div className="flex justify-center">
+            <div className="flex justify-center text-blue-600">
               <Link
                 to="/about"
-                className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors"
+                className="font-medium text-blue-700 hover:text-gray-900 px-4 py-2 transition-colors"
                 style={{ height: '45px' }}
               >
                 About
@@ -35,7 +35,7 @@ export default function Footer() {
             <div className="flex justify-center">
               <HoverCard>
                 <HoverCardTrigger
-                  className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors bg-transparent border-none cursor-pointer"
+                  className="font-medium text-blue-700 hover:text-gray-900 px-4 py-2 transition-colors bg-transparent border-none cursor-pointer"
                   style={{ height: '45px' }}
                 >
                   Contact Us
@@ -54,7 +54,7 @@ export default function Footer() {
               <Link
               // replace with a privacy policy link if one is made
                 to="/"
-                className="font-medium text-gray-700 hover:text-gray-900 px-4 py-2 transition-colors"
+                className="font-medium text-blue-700 hover:text-gray-900 px-4 py-2 transition-colors"
                 style={{ height: '45px' }}
               >
                 Privacy Policy

@@ -101,7 +101,7 @@ function RouteComponent() {
                         style={{ backgroundImage: `url(${img.src})` }}
                       />
                     </div>
-                    <span className="text-gray-600 mt-2 flex justify-center text-sm font-medium">
+                    <span className="text-gray-600 mt-2 flex justify-left text-sm font-medium">
                       {img.picid}
                     </span>
                   </div>

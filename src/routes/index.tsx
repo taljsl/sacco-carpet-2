@@ -12,7 +12,7 @@ function App() {
       <div className="bg-white">
         <div className="w-screen h-auto overflow-hidden leading-none mx-auto">
           <video
-            src="https://prod-sacco.s3.amazonaws.com/video/sacco-video-header-v2.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARBILXDGNIVPQ2CP3%2F20250605%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250605T204457Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Signature=be6382ebd21f9a0322f30791800bd2b8bfe05a2525ea958a98a078c61f1c4d4e"
+            src="https://d5ub84cxsf6h3.cloudfront.net/SaccoHomePageVid.mp4"
             className="w-full h-auto p-1"
             autoPlay
             loop
