@@ -1,1 +1,17 @@
+# public/_redirects
+
+# SPA fallback - all routes should serve index.html
 /*    /index.html   200
+
+# Optional: Redirect old URLs if you have any
+# /old-page    /new-page    301
+
+# Optional: API proxy (if you need to proxy API calls)
+# /api/*    https://your-api-domain.com/api/:splat    200
+
+# Optional: Handle specific file extensions that should NOT be redirected
+# *.js    /assets/:splat    200
+# *.css   /assets/:splat    200
+# *.png   /assets/:splat    200
+# *.jpg   /assets/:splat    200
+# *.ico   /assets/:splat    200
