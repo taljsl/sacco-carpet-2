@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const [loginModalOpen, setLoginModalOpen] = useState(false)
@@ -63,19 +64,21 @@ export default function Header() {
           <div className="mr-4 flex">
             <DropdownMenu>
               <DropdownMenuTrigger
-                className="flex px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide bg-transparent border-none outline-none"
+                className="flex px-4 py-2 text-uppercase text-gray-600 hover:text-gray-800 transition-colors font-medium tracking-wide bg-transparent border-none outline-none cursor-pointer pb-0"
                 style={{ height: '40px' }}
               >
                 INSTALLATIONS
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                align="start"
-                className="bg-white border shadow-md"
+                align="center"
+                sideOffset={-8}
+                className="bg-white border shadow-md rounded-none"
+                
               >
                 <DropdownMenuItem asChild>
                   <Link
                     to="/installations-residential"
-                    className="text-uppercase"
+                    className="text-uppercase cursor-pointer"
                   >
                     RESIDENTIAL
                   </Link>
@@ -83,7 +86,7 @@ export default function Header() {
                 <DropdownMenuItem asChild>
                   <Link
                     to="/installations-hospitality"
-                    className="text-uppercase"
+                    className="text-uppercase cursor-pointer"
                   >
                     HOSPITALITY
                   </Link>
